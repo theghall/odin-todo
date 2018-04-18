@@ -74,7 +74,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _assets_css_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);\n/* harmony import */ var _assets_css_style_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_css_style_css__WEBPACK_IMPORTED_MODULE_0__);\n\n\n__webpack_require__(1);\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _assets_css_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);\n/* harmony import */ var _assets_css_style_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_css_style_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _todo_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);\n\n\n__webpack_require__(1);\n\n\n\nconst itemState = {\n\tname: 'Feed Gizmo',\n\tdesc: 'Food ONLY, NO WATER!!!!',\n\tdueDate: 'May 14',\n\tpriority: 1,\n\tcompleted: false\n}\n\nconst projectState = {\n\tname: 'Home',\n\tdesc: 'Stuff to do around the house',\n\tdueDate: null,\n\tpriority: 1,\n\tcompleted: false,\n\ttasks: []\n}\n\nconst home = _todo_js__WEBPACK_IMPORTED_MODULE_1__[\"baseProject\"](projectState);\nhome.add(itemState);\nhome.remove(0);\nconsole.log(home.get('tasks'));\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 /* 1 */
@@ -91,6 +91,14 @@ eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack:///./no
 /***/ (function(module, exports) {
 
 eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack:///./src/assets/css/style.css?");
+
+/***/ }),
+/* 7 */,
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getters\", function() { return getters; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"setters\", function() { return setters; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"toggler\", function() { return toggler; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"emailer\", function() { return emailer; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"texter\", function() { return texter; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"baseTodoItem\", function() { return baseTodoItem; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"baseProject\", function() { return baseProject; });\n\n\nconst toggler = (state) => ({\n\ttoggleDone: () => state.done = (state.done ? false : true)\n})\n\nconst emailer = (state) => ({\n\temail: () => alert(state.email + ' was notified ' + state.title + ' was completed.')\n})\n\nconst texter = (state) => ({\n\ttext: () => alert(state.recpient + ' was notified ' + state.title + ' was completed.')\n})\n\nconst adder = (state) => ({\n\tadd: (item) => state.tasks.push(item)\n})\n\nconst deleter = (state) => ({\n\tremove: (index) => state.tasks.splice(index, 1)\n})\n\nconst getter = (state) => ({\n\tget: (prop) => { return state[prop] }\n})\n\nconst setter = (state) => ({\n\tset: (prop, value) => state[prop] = value\n})\n\n\nfunction baseTodoItem(state) {\n\treturn Object.assign({}, getter(state), setter(state), toggler(state), state);\n}\n\nfunction baseProject(state) {\n\treturn Object.assign({}, baseTodoItem(state), adder(state), deleter(state));\n}\n\n\n\n\n//# sourceURL=webpack:///./src/todo.js?");
 
 /***/ })
 /******/ ]);
