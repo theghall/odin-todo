@@ -345,4 +345,55 @@ template {
   box-sizing: border-box;
 }
 
+/* Tab menu items */
+/* Thanks to Chris Coyier for his article on tabs with round out borders. */
+/* While I didn't use the round out borders, I mainly used the it for */
+/* the "forefronting" of a tab */
+.tabrow {
+  text-align: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 24px;
+  position: relative;
+  background: lightgreen;
+}
+
+.tabrow:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  border-bottom: 1px solid #000;
+  z-index: 1;
+}
+
+.tabrow:before {
+  z-index: 1;
+}
+
+.tabrow li {
+  margin: 0 10px;
+  padding: 0 10px;
+  border: 1px solid #AAA;
+  border-radius: 15% 15% 0 0;
+  background: lightyellow;
+  display: inline-block;
+  position: relative;
+  z-index: 0;
+}
+
+.tabrow li:hover {
+  cursor: pointer;
+}
+
+/* z-index is the key here, the bottom border-color takes precedence */
+.tabrow li.selected {
+  background: lightgoldenrodyellow;
+  color: #000;
+  z-index: 2;
+  border-bottom-color: lightgoldenrodyellow;
+}
+
 /* ==================== end style.css =========================*/

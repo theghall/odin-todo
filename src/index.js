@@ -4,24 +4,77 @@ require('normalize.css');
 import './assets/css/style.css';
 import * as myTodo from './todo.js';
 
-const itemState = {
-	name: 'Feed Gizmo',
-	desc: 'Food ONLY, NO WATER!!!!',
-	dueDate: 'May 14',
-	priority: 1,
-	completed: false
+function createTabMenu() {
+	const menuItems = ['Tasks', 'Projects'];
+
+	const container = document.getElementById('container');
+
+	const nav = document.createElement('nav');
+	nav.id = 'main-nav';
+
+	const ul = document.createElement('ul');
+	ul.classList.add('tabrow');
+
+	for (let i = 0; i < menuItems.length; i++) {
+		let li = document.createElement('li');
+		li.textContent = menuItems[i];
+
+		// Make first item "active"
+		if (i === 0) li.classList.add('selected');
+
+		ul.appendChild(li);
+
+		addTabListener(li);
+	}
+
+	nav.appendChild(ul);
+	container.appendChild(nav);
 }
 
-const projectState = {
-	name: 'Home',
-	desc: 'Stuff to do around the house',
-	dueDate: null,
-	priority: 1,
-	completed: false,
-	tasks: []
+// Event listeners
+function addTabListener(target) {
+	target.addEventListener('click', function(e) { makeTabActive(e); });
 }
 
-const home = myTodo.baseProject(projectState);
-home.add(itemState);
-home.remove(0);
-console.log(home.get('tasks'));
+function makeTabActive(e) {
+	selectTab(e);
+
+	switch(e.target.textContent) {
+		case 'Tasks':
+			break;
+		case 'Projects':
+			break;
+		default:
+			break;
+	}
+}
+
+function selectTab(e) {
+	const activeClass = 'selected';
+
+	// Find menu associated with '#main-nav'
+	const mainNav = document.getElementById('main-nav');
+	const childrenArr = [...mainNav.children];
+
+	// Find currently selected item, deselect it, select clicked item
+	for (let i = 0; i < childrenArr.length; i++) {
+		// Should be menu we're looking for
+		if (childrenArr[i].tagName === 'UL') {
+			let ulChildrenArr = [...childrenArr[i].children];
+			for (let j = 0; j < ulChildrenArr.length; j++) {
+				if (ulChildrenArr[j].classList.contains(activeClass)) {
+					ulChildrenArr[j].classList.remove(activeClass);
+					e.target.classList.add(activeClass);
+					break;
+				}
+			}
+			break;
+		}
+	}
+}
+
+function ready() {
+	createTabMenu();
+}
+
+document.addEventListener("DOMContentLoaded", ready);
