@@ -3,6 +3,8 @@
 require('normalize.css');
 import './assets/css/style.css';
 import * as myTodo from './todo.js';
+import {buildTaskPage} from './tasksTab';
+import * as todoRes from './commonTab';
 
 function createTabMenu() {
 	const menuItems = ['Tasks', 'Projects'];
@@ -36,13 +38,21 @@ function addTabListener(target) {
 	target.addEventListener('click', function(e) { makeTabActive(e); });
 }
 
+function removeContainer(id) {
+	const elem = document.getElementById(id);
+	if (elem) elem.parentNode.removeChild(elem);
+}
+
 function makeTabActive(e) {
 	selectTab(e);
 
 	switch(e.target.textContent) {
 		case 'Tasks':
+			removeContainer('projects-container');
+			buildTaskPage();
 			break;
 		case 'Projects':
+			removeContainer('tasks-container');
 			break;
 		default:
 			break;
@@ -74,7 +84,9 @@ function selectTab(e) {
 }
 
 function ready() {
+	todoRes.state.loadData();
 	createTabMenu();
+	buildTaskPage();
 }
 
 document.addEventListener("DOMContentLoaded", ready);

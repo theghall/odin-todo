@@ -12,14 +12,6 @@ const texter = (state) => ({
 	text: () => alert(state.recpient + ' was notified ' + state.title + ' was completed.')
 })
 
-const adder = (state) => ({
-	add: (item) => state.tasks.push(item)
-})
-
-const deleter = (state) => ({
-	remove: (index) => state.tasks.splice(index, 1)
-})
-
 const getter = (state) => ({
 	get: (prop) => { return state[prop] }
 })
@@ -28,13 +20,13 @@ const setter = (state) => ({
 	set: (prop, value) => state[prop] = value
 })
 
+const exporter = (state) => ({
+	exportState: () => { return Object.assign({},state) }
+})
+
 
 function baseTodoItem(state) {
-	return Object.assign({}, getter(state), setter(state), toggler(state), state);
+	return Object.assign({}, getter(state), setter(state), toggler(state), exporter(state));
 }
 
-function baseProject(state) {
-	return Object.assign({}, baseTodoItem(state), adder(state), deleter(state));
-}
-
-export {getters, setters, toggler, emailer, texter, baseTodoItem, baseProject};
+export {getters, setters, toggler, emailer, texter, baseTodoItem};

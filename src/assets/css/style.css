@@ -1,7 +1,12 @@
 /* ==================== Begin style.css =======================*/
 
+/* Universal */
 * {
   box-sizing: border-box;
+}
+
+.hidden { 
+  display: none;
 }
 
 /* Tab menu items */
@@ -55,4 +60,23 @@
   border-bottom-color: lightgoldenrodyellow;
 }
 
+/* taskTab */
+footer {
+  position: sticky;
+}
+
+footer img, p {
+  display: inline;
+}
+
+tr td:nth-child(2):hover {
+  text-decoration: underline;
+  cursor: pointer;
+  
+}
+
+thead tr td:nth-child(2):hover {
+ text-decoration: none;
+ cursor: auto;
+}
 /* ==================== end style.css =========================*/

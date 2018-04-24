@@ -15,6 +15,7 @@
   "author": "Gary Hall",
   "license": "ISC",
   "dependencies": {
+    "date-fns": "^1.29.0",
     "normalize.css": "^8.0.0"
   },
   "devDependencies": {
