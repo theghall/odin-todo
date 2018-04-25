@@ -30,6 +30,7 @@ const state = {
 };
 
 const elemId = {
+	containerId: 'container',
 	pageActionsId: 'page-actions',
 	pageButtonsId: 'page-buttons',
  	pageFormId: 'page-form',
@@ -282,7 +283,7 @@ const utility = {
 	},
 
 	getRootElement: function() {
-		return document.getElementById('container');
+		return document.getElementById(elemId.containerId);
 	},
 
 	getTextValue: function(form, field) {
