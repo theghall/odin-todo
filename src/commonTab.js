@@ -29,6 +29,14 @@ const state = {
 	}
 };
 
+const elemId = {
+	pageActionsId: 'page-actions',
+	pageButtonsId: 'page-buttons',
+ 	pageFormId: 'page-form',
+	taskContainerId: 'tasks-container',
+	taskTableId: 'tasks-table'
+}
+
 const resources = {
 	doneImg: 'assets/graphics/complete25x25.png',
 	openImg: 'assets/graphics/open25x25.png',
@@ -110,7 +118,7 @@ const utility = {
 
 	createSection: function createSection() {
 		const section = document.createElement('section');
-		section.id = 'tasks-container';
+		section.id = elemId.taskContainerId;
 		utility.getRootElement().appendChild(section);
 		return section;
 	},
@@ -187,9 +195,9 @@ const utility = {
 	},
 
 	addPageActions: function(parentElem) {
-		const ids = ['page-buttons', 'page-form'];
+		const ids = [elemId.pageButtonsId, elemId.pageFormId];
 		const parentDiv = document.createElement('div');
-		parentDiv.id = 'page-actions'
+		parentDiv.id = elemId.pageActionsId
 
 		for (let i = 0; i < ids.length; i++) {
 			let div = document.createElement('div');
@@ -284,7 +292,7 @@ const utility = {
 
 	// Event Listener helpers
 	delPageButtons: function() {
-		const elem = document.getElementById('page-buttons');
+		const elem = document.getElementById(elemId.pageButtonsId);
 
 		while (elem.firstChild) {
 			elem.removeChild(elem.firstChild);
@@ -294,7 +302,7 @@ const utility = {
 	renderTask: function(index) {
 		const taskIndex = (index >= 0 ? index : state.tasks.length-1);
 		const tr = utility.createTaskRow(state.tasks[taskIndex], taskIndex);
-		const parentElem = document.getElementById('tasks-table');
+		const parentElem = document.getElementById(elemId.taskTableId);
 
 		if (index >= 0) {
 			// Add one to allow for thead
@@ -317,12 +325,12 @@ const utility = {
 	// Event Listeners
 	addTask: function(e) {
 		utility.delPageButtons();
-		utility.addTaskForm(document.getElementById('page-form'),
+		utility.addTaskForm(document.getElementById(elemId.pageFormId),
 			'task-form', forms.taskForm, utility.handleAddTask);
 	},
 
 	deleteTask: function(e) {
-		const table = document.getElementById('tasks-table');
+		const table = document.getElementById(elemId.taskTableId);
 		const row = e.target.parentNode.parentNode;
 		const sibling = e.target.parentNode.parentNode.nextSibling;
 		const taskIndex = utility.getArrayIndex(row);
@@ -334,7 +342,7 @@ const utility = {
 	editTask: function(e) {
 		const taskIndex = utility.getArrayIndex(e.target.parentNode);
 		utility.delPageButtons();
-		utility.updateTaskForm(document.getElementById('page-form'),
+		utility.updateTaskForm(document.getElementById(elemId.pageFormId),
 			'task-form', forms.taskForm, taskIndex, utility.handleUpdateTask);
 	},
 
@@ -345,7 +353,7 @@ const utility = {
 		state.tasks.push(myTodo.baseTodoItem(formData));
 		utility.deleteForm(form.id);
 		utility.renderTask(-1);
-		utility.addPageButtons(document.getElementById('page-buttons'));
+		utility.addPageButtons(document.getElementById(elemId.pageButtonsId));
 	},
 
 	handleUpdateTask: function(e, form) {
@@ -356,7 +364,7 @@ const utility = {
 		state.tasks[parseInt(taskIndex)] = myTodo.baseTodoItem(formData);
 		utility.deleteForm(form.id);
 		utility.renderTask(taskIndex);
-		utility.addPageButtons(document.getElementById('page-buttons'));
+		utility.addPageButtons(document.getElementById(elemId.pageButtonsId));
 	},
 
 	saveTasks: function(e) {
