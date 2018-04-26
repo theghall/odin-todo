@@ -87,23 +87,9 @@ const utility = {
 	// Event listeners
 	
 	addProjectForm: function(e) {
-		const displayContainer = document.createElement('div');
-		displayContainer.id = todoGlobal.elemId.popupDisplayId;
-		displayContainer.classList.add('block');
-
-		const popupContainer = document.createElement('div');
-		popupContainer.id = todoGlobal.elemId.popupContainerId;
-
-		displayContainer.appendChild(popupContainer);
-
-		const form = document.createElement('form');
-		form.id = todoGlobal.elemId.popupFormId;
-		todoGlobal.utility.buildForm(form,todoGlobal.forms.projectForm);
-		todoGlobal.utility.buildButton(form, 'submit', 'add-project', ['btn'], 'Add Project', utility.handleSaveProject);
-
-		popupContainer.appendChild(form);
-
-		todoGlobal.utility.getRootElement().appendChild(displayContainer);
+		const saveButton = todoGlobal.utility.createModalButton('submit', 'add-project', ['btn'], 'Add Project', utility.handleSaveProject);
+		todoGlobal.utility.addModalForm(todoGlobal.forms.projectForm, saveButton);
+		
 	},
 
 	deleteProject: function(e) {
@@ -121,8 +107,10 @@ const utility = {
 
 	handleSaveProject: function(e, form) {
 		e.preventDefault();
-		const formData= todoGlobal.utility.getFormData(form);
-		delete formData.taskindex;
+		const formData = todoGlobal.utility.getFormData(form);
+		console.log(formData);
+		delete formData.itemindex;
+		console.log(formData);
 		todoGlobal.state.projects.push(myTodo.baseTodoItem(formData));
 		todoGlobal.utility.deleteModal();
 		utility.renderProject(-1);

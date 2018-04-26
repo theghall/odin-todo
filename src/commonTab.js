@@ -90,6 +90,16 @@ const utility = {
 		return button;
 	},
 
+	createModalButton: function(type, id, classes, text, callback) {
+		const button = document.createElement('button')
+		button.setAttribute('type', type);
+		button.id = id;
+		for (let i = 0; i < classes.length; i++) { button.classList.add(classes[i]); }
+		button.textContent = text;
+		button.addEventListener('click', function(e) {callback(e, form)});
+		return button;
+	},
+
 	createDataCell: function(text, hidden) {
 		const td = document.createElement('td');
 		if (hidden) td.classList.add('hidden');
@@ -173,6 +183,29 @@ const utility = {
 		parentElem.appendChild(footer);
 	},
 
+	addModalForm: function(formItems, saveButton) {
+		// This div sets up form to be "modal"
+		const displayContainer = document.createElement('div');
+		displayContainer.id = elemId.popupDisplayId;
+		displayContainer.classList.add('block');
+
+		const popupContainer = document.createElement('div');
+		popupContainer.id = elemId.popupContainerId;
+		displayContainer.appendChild(popupContainer);
+
+		const form = document.createElement('form');
+		form.id = elemId.popupFormId;
+		utility.buildForm(form, formItems);
+
+		form.appendChild(saveButton);
+		const cancelButton = utility.createButton('Cancel');
+		cancelButton.addEventListener('click', utility.closeModal);
+		form.appendChild(cancelButton);
+		popupContainer.appendChild(form);
+
+		utility.getRootElement().appendChild(displayContainer);
+	},
+
 	addPageActions: function(parentElem) {
 		const ids = [elemId.pageButtonsId, elemId.pageFormId];
 		const parentDiv = document.createElement('div');
@@ -194,9 +227,6 @@ const utility = {
 		button = utility.createButton('Save');
 		button.addEventListener('click', utility.save);
 		parentElem.appendChild(button);
-	},
-
-	addProjectForm(parentElem) {
 	},
 
 	addSection: function(parentElem, id) {
@@ -241,7 +271,7 @@ const utility = {
 	updateTaskForm: function(parentElem, formId, formItems, taskIndex, callback) {
 		const form = document.createElement('form');
 		form.id = formId;
-		const hidden = [{name: 'taskindex', value: taskIndex}];
+		const hidden = [{name: 'itemindex', value: taskIndex}];
 		utility.buildForm(form, formItems, state.tasks[taskIndex], hidden);
 		utility.buildButton(form, 'submit', 'update-task', ['btn'], 'Update Task', callback);
 		parentElem.appendChild(form);
@@ -263,7 +293,6 @@ const utility = {
 		button.setAttribute('type', type);
 		button.id = id;
 		for (let i = 0; i < classes.length; i++) { button.classList.add(classes[i]); }
-		button.classList.add('btn');
 		button.textContent = text;
 		form.appendChild(button);
 		button.addEventListener('click', function(e) {callback(e, form)});
@@ -308,7 +337,7 @@ const utility = {
 	},
 
 	getFormData: function(form) {
-		const taskIndex = this.getTextValue(form, 'taskindex');
+		const itemIndex = this.getTextValue(form, 'itemindex');
 		const name = this.getTextValue(form, 'name');
 		const desc = this.getTextValue(form, 'desc');
 		const due = this.getTextValue(form, 'due');
@@ -316,7 +345,7 @@ const utility = {
 		const priority = this.getTextValue(form, 'priority');
 
 		return {name: name, desc: desc, due: due, project: project,
-			priority: priority, done: false, taskindex: taskIndex};
+			priority: priority, done: false, itemindex: itemIndex};
 	},
 
 	getRootElement: function() {
@@ -367,6 +396,10 @@ const utility = {
 			'task-form', forms.taskForm, utility.handleAddTask);
 	},
 
+	closeModal: function(e) {
+		utility.deleteModal();
+	},
+
 	deleteTask: function(e) {
 		const table = document.getElementById(elemId.taskTableId);
 		const row = e.target.parentNode.parentNode;
@@ -387,7 +420,7 @@ const utility = {
 	handleAddTask: function(e, form) {
 		e.preventDefault();
 		const formData= utility.getFormData(form);
-		delete formData.taskindex;
+		delete formData.itemindex;
 		state.tasks.push(myTodo.baseTodoItem(formData));
 		utility.deleteForm(form.id);
 		utility.renderTask(-1);
@@ -397,8 +430,8 @@ const utility = {
 	handleUpdateTask: function(e, form) {
 		e.preventDefault();
 		const formData= utility.getFormData(form);
-		const taskIndex = parseInt(formData.taskindex);
-		delete formData.taskindex;
+		const taskIndex = parseInt(formData.itemindex);
+		delete formData.itemindex;
 		state.tasks[parseInt(taskIndex)] = myTodo.baseTodoItem(formData);
 		utility.deleteForm(form.id);
 		utility.renderTask(taskIndex);
