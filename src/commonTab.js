@@ -12,7 +12,8 @@ const state = {
 		let projects;
 
 		if (localStorage) {
-			if (tasks = localStorage.getItem('tasks')) this.tasks = JSON.parse(tasks).map(task =>  myTodo.baseTodoItem(task));
+			if (tasks = localStorage.getItem('tasks')) state.tasks = JSON.parse(tasks).map(task =>  myTodo.baseTodoItem(task));
+			if (projects = localStorage.getItem('projects')) state.projects = JSON.parse(projects).map(project =>  myTodo.baseTodoItem(project));
 		}
 		else {
 			alert('Cannot load any data');
@@ -21,8 +22,10 @@ const state = {
 	saveData: function() {
 		if (localStorage) {
 			localStorage.clear();
-			const states = this.tasks.map(task => task.exportState());
+			const states = state.tasks.map(task => task.exportState());
 			localStorage.setItem('tasks', JSON.stringify(states));
+			const projects = state.projects.map(project => project.exportState());
+			localStorage.setItem('projects', JSON.stringify(projects));
 		} else {
 			alert('Unable to save your tasks and projects');
 		}
@@ -33,9 +36,16 @@ const elemId = {
 	containerId: 'container',
 	pageActionsId: 'page-actions',
 	pageButtonsId: 'page-buttons',
+	popupDisplayId: 'popup-show',
+	popupFormId: 'popup-form',
  	pageFormId: 'page-form',
 	taskContainerId: 'tasks-container',
-	taskTableId: 'tasks-table'
+	popupContainerId: 'popup-container',
+	projectsContainerId: 'projects-container',
+	taskTableId: 'tasks-table',
+	projectTableId: 'projects-table',
+	projectsSectionId: 'projects',
+	tasksSectionId: 'tasks'
 }
 
 const resources = {
@@ -56,50 +66,20 @@ const forms = {
 			{tag: 'input', attrs: [{name: 'type', value: 'project'}, {name: 'name', value: 'project'}], text: '', required: false},
 			{tag: 'label', attrs: [{name: 'for', value: 'priority'}], text: 'Priority'},
 			{tag: 'input', attrs: [{name: 'type', value: 'text'}, {name: 'name', value: 'priority'}], text: '', required: true},
+		],
+
+		projectForm: [
+			{tag: 'label', attrs: [{name: 'for', value: 'name'}], text: 'Name', required: null},
+			{tag: 'input', attrs: [{name: 'type', value: 'text'}, {name: 'name', value: 'name'}], text: '', required: true},
+			{tag: 'label', attrs: [{name: 'for', value: 'desc'}], text: 'Description'},
+			{tag: 'input', attrs: [{name: 'type', value: 'text'}, {name: 'name', value: 'desc'}], text: '', required: true},
+			{tag: 'label', attrs: [{name: 'for', value: 'date'}], text: 'Due Date'},
+			{tag: 'input', attrs: [{name: 'type', value: 'date'}, {name: 'name', value: 'due'}], text: '', required: true},
+			{tag: 'label', attrs: [{name: 'for', value: 'priority'}], text: 'Priority'},
+			{tag: 'input', attrs: [{name: 'type', value: 'text'}, {name: 'name', value: 'priority'}], text: '', required: true},
 		]
 };
 
-function addHiddenFields(form, hidden) {
-	for (let i = 0; i < hidden.length; i++) {
-		let hiddenInput = document.createElement('input');
-		hiddenInput.setAttribute('type', 'hidden');
-		hiddenInput.setAttribute('name', hidden[i].name);
-		hiddenInput.setAttribute('value', hidden[i].value);
-		form.appendChild(hiddenInput);
-	}
-}
-
-function buildForm(form, items, data=null, hidden=null) { 
-	if (hidden) addHiddenFields(form, hidden);
-	for (let i = 0; i < items.length; i++) {
-		let elem = document.createElement(items[i].tag);
-		if (items[i].tag === 'input') elem.classList.add('form-input');
-		let attrs = items[i].attrs;
-		for (let j = 0; j < attrs.length; j++) {
-			let name = attrs[j].name;
-			let value = attrs[j].value;
-			elem.setAttribute(name, value);
-			if (items[i].tag === 'input' && name === 'name') {
-				if (data) elem.value = data.get(value);
-			}
-		}
-		if (items[i].required) elem.setAttribute('required','required');
-		if (items[i].text !== '') elem.textContent = items[i].text;
-		form.appendChild(elem);
-		form.appendChild(document.createElement('br'));
-	}
-}
-
-function buildButton(form, type, id, classes, text, callback) {
-	const button = document.createElement('button')
-	button.setAttribute('type', type);
-	button.id = id;
-	for (let i = 0; i < classes.length; i++) { button.classList.add(classes[i]); }
-	button.classList.add('btn');
-	button.textContent = text;
-	form.appendChild(button);
-	button.addEventListener('click', function(e) {callback(e, form)});
-}
 
 const utility = {
 	// Create Functions -- return an element
@@ -117,22 +97,21 @@ const utility = {
 		return td;
 	},
 
-	createSection: function createSection() {
+	createSection: function createSection(id) {
 		const section = document.createElement('section');
-		section.id = elemId.taskContainerId;
-		utility.getRootElement().appendChild(section);
+		section.id = id;
 		return section;
 	},
 
-	createStatusCell: function(task) {
+	createStatusCell: function(item) {
 		const td = document.createElement('td');
 		const img = document.createElement('img');
 		img.addEventListener('click', utility.toggleComplete);
 		td.appendChild(img);
 
-		switch(task.get('done')) {
+		switch(item.get('done')) {
 			case false:
-				if (isPast(parse(task.get('due')))) {
+				if (isPast(parse(item.get('due')))) {
 					img.setAttribute('src', resources.overdueImg);
 				} else {
 					img.setAttribute('src', resources.openImg); 
@@ -145,10 +124,9 @@ const utility = {
 		return td;
 	},
 
-	createTable: function(parentElem, id) {
+	createTable: function(id) {
 		const table = document.createElement('table');
 		table.id = id;
-		parentElem.appendChild(table);
 		return table;
 	},
 
@@ -214,8 +192,15 @@ const utility = {
 		parentElem.appendChild(button);
 
 		button = utility.createButton('Save');
-		button.addEventListener('click', utility.saveTasks);
+		button.addEventListener('click', utility.save);
 		parentElem.appendChild(button);
+	},
+
+	addProjectForm(parentElem) {
+	},
+
+	addSection: function(parentElem, id) {
+		parentElem.appendChild(utility.createSection(id));
 	},
 
 	addTableHeader: function(parentElem, colHeaders) {
@@ -232,36 +217,88 @@ const utility = {
 	addTaskForm: function(parentElem, formId, formItems, callback) {
 		const form = document.createElement('form');
 		form.id = formId;
-		buildForm(form, formItems)
-		buildButton(form, 'submit', 'add-task', ['btn'], 'Add Task', callback);
+		utility.buildForm(form, formItems)
+		utility.buildButton(form, 'submit', 'add-task', ['btn'], 'Add Task', callback);
 		parentElem.appendChild(form);
 	},
 
-	addTaskTable: function(parentElem) {
+	addTaskTable: function(parentElem, project=null) {
 		const colHeaders = ['', 'Name', 'Description', 'Due Date', 'Project', 'Priority', 'Action'];
-		utility.addTableHeader(parentElem, colHeaders);
+		const table = utility.createTable(elemId.taskTableId);
 
-		for (let i = 0; i < state.tasks.length; i++) {
-			let task = state.tasks[i];
+		utility.addTableHeader(table, colHeaders);
+
+		const tasks = state.tasks.filter(item => project === null || item.get('project') === project);
+
+		for (let i = 0; i < tasks.length; i++) {
+			let task = tasks[i];
 			let tr = utility.createTaskRow(task, i);
-			parentElem.appendChild(tr);
+			table.appendChild(tr);
 		}
+		parentElem.appendChild(table);
 	},
 
 	updateTaskForm: function(parentElem, formId, formItems, taskIndex, callback) {
 		const form = document.createElement('form');
 		form.id = formId;
 		const hidden = [{name: 'taskindex', value: taskIndex}];
-		buildForm(form, formItems, state.tasks[taskIndex], hidden);
-		buildButton(form, 'submit', 'update-task', ['btn'], 'Update Task', callback);
+		utility.buildForm(form, formItems, state.tasks[taskIndex], hidden);
+		utility.buildButton(form, 'submit', 'update-task', ['btn'], 'Update Task', callback);
 		parentElem.appendChild(form);
 	},
 
 	// Support functions
+	addHiddenField: function(form, hidden) {
+		for (let i = 0; i < hidden.length; i++) {
+			let hiddenInput = document.createElement('input');
+			hiddenInput.setAttribute('type', 'hidden');
+			hiddenInput.setAttribute('name', hidden[i].name);
+			hiddenInput.setAttribute('value', hidden[i].value);
+			form.appendChild(hiddenInput);
+		}
+	},
+
+	buildButton: function(form, type, id, classes, text, callback) {
+		const button = document.createElement('button')
+		button.setAttribute('type', type);
+		button.id = id;
+		for (let i = 0; i < classes.length; i++) { button.classList.add(classes[i]); }
+		button.classList.add('btn');
+		button.textContent = text;
+		form.appendChild(button);
+		button.addEventListener('click', function(e) {callback(e, form)});
+	},
+
+	buildForm: function(form, items, data=null, hidden=null) { 
+		if (hidden) utility.addHiddenFields(form, hidden);
+		for (let i = 0; i < items.length; i++) {
+			let elem = document.createElement(items[i].tag);
+			if (items[i].tag === 'input') elem.classList.add('form-input');
+			let attrs = items[i].attrs;
+			for (let j = 0; j < attrs.length; j++) {
+				let name = attrs[j].name;
+				let value = attrs[j].value;
+				elem.setAttribute(name, value);
+				if (items[i].tag === 'input' && name === 'name') {
+					if (data) elem.value = data.get(value);
+				}
+			}
+			if (items[i].required) elem.setAttribute('required','required');
+			if (items[i].text !== '') elem.textContent = items[i].text;
+			form.appendChild(elem);
+			form.appendChild(document.createElement('br'));
+		}
+	},
+	
 	deleteForm: function(formId) {
 		const form = document.getElementById(formId);
 		const parent = form.parentNode;
 		parent.removeChild(form);
+	},
+
+	deleteModal: function() {
+		const modal = document.getElementById(elemId.popupDisplayId);
+		modal.parentNode.removeChild(modal);
 	},
 
 	getArrayIndex: function(row) {
@@ -368,17 +405,21 @@ const utility = {
 		utility.addPageButtons(document.getElementById(elemId.pageButtonsId));
 	},
 
-	saveTasks: function(e) {
+	save: function(e) {
 		state.saveData();
 	},
 
 	toggleComplete: function(e) {
 		const img = e.target;
+		const tableId = e.target.parentNode.parentNode.parentNode.id;
 		const cells = e.target.parentNode.parentNode.childNodes;
-		const tasksIndex = parseInt(cells[cells.length - 1].textContent);
+		const index = parseInt(cells[cells.length - 1].textContent);
 
-		if (state.tasks[tasksIndex].get('done')) {
-			if (isPast(parse(state.tasks[tasksIndex].get('due')))) {
+		const itemArray =
+			(tableId === elemId.taskTableId ? state.tasks : state.projects);
+
+		if (itemArray[index].get('done')) {
+			if (isPast(parse(itemArray[index].get('due')))) {
 				img.src = resources.overdueImg;
 			} else {
 				img.src = resources.openImg;
@@ -386,10 +427,10 @@ const utility = {
 		} else {
 			img.src = resources.doneImg;
 		}
-		state.tasks[tasksIndex].toggleDone();
+		itemArray[index].toggleDone();
 		img.addEventListener('click', utility.toggleComplete);
 	}
 
 };
 
-export {state, forms, resources, utility};
+export {state, elemId, forms, resources, utility};

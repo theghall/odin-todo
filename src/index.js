@@ -4,7 +4,8 @@ require('normalize.css');
 import './assets/css/style.css';
 import * as myTodo from './todo.js';
 import {buildTaskPage} from './tasksTab';
-import * as todoRes from './commonTab';
+import {buildProjectPage} from './projectsTab';
+import * as todoGlobal from './commonTab';
 
 function createTabMenu() {
 	const menuItems = ['Tasks', 'Projects'];
@@ -48,13 +49,12 @@ function makeTabActive(e) {
 
 	switch(e.target.textContent) {
 		case 'Tasks':
-			removeContainer('projects-container');
+			removeContainer(todoGlobal.elemId.projectsContainerId);
 			buildTaskPage();
 			break;
 		case 'Projects':
-			removeContainer('tasks-container');
-			break;
-		default:
+			removeContainer(todoGlobal.elemId.taskContainerId);
+			buildProjectPage();
 			break;
 	}
 }
@@ -84,7 +84,7 @@ function selectTab(e) {
 }
 
 function ready() {
-	todoRes.state.loadData();
+	todoGlobal.state.loadData();
 	createTabMenu();
 	buildTaskPage();
 }
