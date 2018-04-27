@@ -91,7 +91,7 @@ const utility = {
 		const numTasks = tasks.length;
 		const numComplete = tasks.filter(item => item.get('done') === true).length;
 
-		return (numTasks === 0 ? 0 : (numComplete / numTasks) * 100);
+		return Math.round((numTasks === 0 ? 0 : (numComplete / numTasks) * 100));
 	},
 
 	renderProject: function(index) {
