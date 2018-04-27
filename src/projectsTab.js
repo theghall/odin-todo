@@ -3,6 +3,10 @@
 import * as myTodo from './todo';
 import * as todoGlobal from './commonTab';
 
+const projectGlobal = {
+	projectBarLabels: ['Project:', 'Desc:', 'Due:', 'Priority', 'Complete:']
+};
+
 const utility = {
 	// Add functions - functions that add children to a parent element
 
@@ -10,6 +14,10 @@ const utility = {
 		const button = todoGlobal.utility.createButton('Add Project');
 		button.addEventListener('click', utility.addProjectForm);
 		parentElem.appendChild(button);
+	},
+
+	addProjectBar: function(parentElem) {
+		parentElem.appendChild(utility.createProjectBar());
 	},
 
 	addProjectTable: function(parentElem) {
@@ -27,6 +35,19 @@ const utility = {
 	},
 
 	// Create functions - functions that return an element
+	createProjectBar: function() {
+		const section = document.createElement('section');
+		section.id = todoGlobal.elemId.projectStatusBarId;
+
+		for (let i = 0; i < projectGlobal.projectBarLabels.length; i++) {
+			let span = document.createElement('span');
+			span.textContent = projectGlobal.projectBarLabels[i];
+			section.appendChild(span);
+		}
+
+		return section;
+	},
+
 	createProjectRow: function(project, index) {
 		const propOrder = ['name','due'];
 		const tr = document.createElement('tr');
@@ -64,6 +85,15 @@ const utility = {
 		todoGlobal.utility.addTaskTable(document.getElementById(todoGlobal.elemId.tasksSectionId));
 	},
 
+	calcPercentComplete: function(projectName) {
+		const tasks = todoGlobal.state.tasks.filter(item =>
+			projectName === null || item.get('project') === projectName)
+		const numTasks = tasks.length;
+		const numComplete = tasks.filter(item => item.get('done') === true).length;
+
+		return (numTasks === 0 ? 0 : (numComplete / numTasks) * 100);
+	},
+
 	renderProject: function(index) {
 		const projectIndex = (index >= 0 ? index : todoGlobal.state.projects.length-1);
 		const tr = utility.createProjectRow(todoGlobal.state.projects[projectIndex], projectIndex);
@@ -77,8 +107,49 @@ const utility = {
 		}
 	},
 
+	updateProjectBar: function(project) {
+		if (project === null) {
+			const parentElem = 
+				document.getElementById(todoGlobal.elemId.projectsContainerId);
+			const section = utility.createProjectBar();
+			parentElem.replaceChild(section, 
+				document.getElementById(todoGlobal.elemId.projectStatusBarId));
+			return;
+		}
+		const propOrder = ['name', 'desc', 'due', 'priority'];
+		const section = document.createElement('section');
+		section.id = todoGlobal.elemId.projectStatusBarId;
+
+		// Labels include percent complete, which is calculated, so -1
+		for (let i = 0; i < propOrder.length - 1; i++) {
+			let span = document.createElement('span');
+			span.textContent = projectGlobal.projectBarLabels[i] + ' '
+				+ project.get(propOrder[i]);
+			section.appendChild(span);
+
+		}
+		const percentComplete = utility.calcPercentComplete(project.get('name'));
+		const span = document.createElement('span');
+		span.textContent = projectGlobal.projectBarLabels[projectGlobal.projectBarLabels.length - 1] + 
+			' ' + percentComplete + '%';
+		section.appendChild(span);
+
+		const parentElem = document.getElementById(todoGlobal.elemId.projectsContainerId);
+		parentElem.replaceChild(section, document.getElementById(todoGlobal.elemId.projectStatusBarId));
+	},
+
 	// Event listener helpers
 	
+	deleteProjectTasks: function(projectName) {
+		// Every splice moves items to a new index
+		let accum = 0;
+		const indices = todoGlobal.utility.buildIndices(projectName);
+		for (let i = 0; i < indices.length; i++) { 
+			todoGlobal.state.tasks.splice(indices[i] - accum, 1); 
+			accum++;
+		}
+	},
+
 	deleteTaskTable: function() {
 		const table = document.getElementById(todoGlobal.elemId.taskTableId);
 		table.parentNode.removeChild(table);
@@ -89,46 +160,69 @@ const utility = {
 	addProjectForm: function(e) {
 		const saveButton = todoGlobal.utility.createModalButton('submit', 'add-project', ['btn'], 'Add Project', utility.handleSaveProject);
 		todoGlobal.utility.addModalForm(todoGlobal.forms.projectForm, saveButton);
-		
 	},
 
 	deleteProject: function(e) {
-	},
-
-	editProject: function(e) {
-	},
-
-	loadProject: function(e) {
-		const project = e.target.textContent;
+		const table = document.getElementById(todoGlobal.elemId.projectTableId);
+		const row = e.target.parentNode.parentNode;
+		const sibling = e.target.parentNode.parentNode.nextSibling;
+		const projectIndex = todoGlobal.utility.getArrayIndex(row);
+		const project = todoGlobal.state.projects[projectIndex];
+		todoGlobal.state.projects.splice(projectIndex, 1);
+		table.removeChild(row);
+		todoGlobal.utility.updateHiddenIndices(sibling);
+		utility.deleteProjectTasks(project.get('name'));
+		todoGlobal.state.currentProject = null;
 		utility.deleteTaskTable();
-		todoGlobal.utility.addTaskTable(document.getElementById(todoGlobal.elemId.tasksSectionId), project);
-
+		utility.updateProjectBar(project);
+		todoGlobal.utility.addTaskTable(document.getElementById(todoGlobal.elemId.tasksSectionId));
 	},
 
-	handleSaveProject: function(e, form) {
+	handleContainerClicks(e) {
+		utility.updateProjectBar(todoGlobal.state.currentProject);
+	},
+
+	handleSaveProject: function(e) {
 		e.preventDefault();
+		const form = e.target.parentNode;
 		const formData = todoGlobal.utility.getFormData(form);
-		console.log(formData);
 		delete formData.itemindex;
-		console.log(formData);
 		todoGlobal.state.projects.push(myTodo.baseTodoItem(formData));
 		todoGlobal.utility.deleteModal();
 		utility.renderProject(-1);
-	}
+	},
+
+	loadProject: function(e) {
+		const projectName = e.target.textContent;
+		const row = e.target.parentNode;
+		const index = todoGlobal.utility.getArrayIndex(row);
+		const project = todoGlobal.state.projects[index];
+		todoGlobal.state.currentProject = project;
+		utility.deleteTaskTable();
+		utility.updateProjectBar(project);
+		todoGlobal.utility.addTaskTable(document.getElementById(todoGlobal.elemId.tasksSectionId), projectName);
+	},
 };
 
 function buildProjectPage() {
+	todoGlobal.state.currentProject = null;
+
 	todoGlobal.utility.addSection(
 		todoGlobal.utility.getRootElement(),
 		todoGlobal.elemId.projectsContainerId
 	);
 	const container = document.getElementById(todoGlobal.elemId.projectsContainerId);
+	container.addEventListener('click', utility.handleContainerClicks);
+
 	utility.buildProjectSection();
+	utility.addProjectBar(container);
 	utility.buildTaskSection();
+
 	todoGlobal.utility.addPageActions(container);
 	const buttonsContainer = document.getElementById(todoGlobal.elemId.pageButtonsId);
 	utility.addPageButton(buttonsContainer);
 	todoGlobal.utility.addPageButtons(buttonsContainer);
+
 	todoGlobal.utility.addFooter(container);
 }
 
