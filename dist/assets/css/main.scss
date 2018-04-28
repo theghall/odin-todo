@@ -1,46 +1,38 @@
 /* ==================== Begin style.css =======================*/
-
 /* Universal */
 * {
-  box-sizing: border-box;
-}
+  box-sizing: border-box; }
 
-.hidden { 
-  display: none;
-}
+.hidden {
+  display: none; }
 
 .block {
-  display: block;
-}
+  display: block; }
 
 #container {
-  height: 450px;
-}
+  height: 450px; }
 
 div#popup-show {
   width: 100%;
   height: 100%;
-  top:0;
-  left:0;
-  position:fixed;
-  overflow:auto;
-}
+  top: 0;
+  left: 0;
+  position: fixed;
+  overflow: auto; }
 
 div#popup-container {
-  position:absolute;
-  left:50%;
-  top:17%;
-  margin-left:-202px;
-}
+  position: absolute;
+  left: 50%;
+  top: 17%;
+  margin-left: -202px; }
 
 #popup-form {
-  max-width:300px;
-  min-width:250px;
-  padding:10px 50px;
-  border:2px solid gray;
-  border-radius:10px;
-  background-color: lightgoldenrodyellow;
-}
+  max-width: 300px;
+  min-width: 250px;
+  padding: 10px 50px;
+  border: 2px solid gray;
+  border-radius: 10px;
+  background-color: lightgoldenrodyellow; }
 
 /* Tab menu items */
 /* Thanks to Chris Coyier for his article on tabs with round out borders. */
@@ -53,8 +45,7 @@ div#popup-container {
   padding: 0;
   line-height: 24px;
   position: relative;
-  background: lightgreen;
-}
+  background: lightgreen; }
 
 .tabrow:after {
   position: absolute;
@@ -63,12 +54,10 @@ div#popup-container {
   bottom: 0;
   left: 0;
   border-bottom: 1px solid #000;
-  z-index: 1;
-}
+  z-index: 1; }
 
 .tabrow:before {
-  z-index: 1;
-}
+  z-index: 1; }
 
 .tabrow li {
   margin: 0 10px;
@@ -78,54 +67,44 @@ div#popup-container {
   background: lightyellow;
   display: inline-block;
   position: relative;
-  z-index: 0;
-}
+  z-index: 0; }
 
 .tabrow li:hover {
-  cursor: pointer;
-}
+  cursor: pointer; }
 
 /* z-index is the key here, the bottom border-color takes precedence */
 .tabrow li.selected {
   background: lightgoldenrodyellow;
   color: #000;
   z-index: 2;
-  border-bottom-color: lightgoldenrodyellow;
-}
+  border-bottom-color: lightgoldenrodyellow; }
 
 /* taskTab */
 footer {
   position: sticky;
-  clear: both;
-}
+  clear: both; }
 
 footer img, p {
-  display: inline;
-}
+  display: inline; }
 
 tr td:nth-child(2):hover {
   text-decoration: underline;
-  cursor: pointer;
-  
-}
+  cursor: pointer; }
 
 thead tr td:nth-child(2):hover {
- text-decoration: none;
- cursor: auto;
-}
+  text-decoration: none;
+  cursor: auto; }
 
 #tasks-container {
-  height: inherit;
-}
+  height: inherit; }
 
 /* Project tab */
 #projects-container {
-  height: inherit;
-}
+  height: inherit; }
 
 #projects {
   width: 300px;
   height: inherit;
-  float: left;
-}
+  float: left; }
+
 /* ==================== end style.css =========================*/

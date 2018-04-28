@@ -1,7 +1,7 @@
 "use strict";
 
 require('normalize.css');
-import './assets/css/style.css';
+import './assets/css/style.scss';
 import * as myTodo from './todo.js';
 import {buildTaskPage} from './tasksTab';
 import {buildProjectPage} from './projectsTab';

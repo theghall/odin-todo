@@ -4,7 +4,7 @@ const path = require('path');
 
 const cssDist = 'assets/css/';
 
-const ExtractCSS = new ExtractTextPlugin(cssDist + '[name].css');
+const ExtractSass = new ExtractTextPlugin({filename: cssDist + '[name].css', allChunks: true});
 
 module.exports = {
   mode: 'none',
@@ -15,13 +15,13 @@ module.exports = {
   },
   module: {
      rules: [
-       {
-         test: /\.css$/,
-         use: ExtractCSS.extract({fallback: 'style-loader', use: 'css-loader'}),
-       },
+	   { 
+		 test: /\.(css|sass|scss)$/,
+		 use: ExtractSass.extract({fallback: 'style-loader', use: ['css-loader', 'sass-loader']})
+	   }
      ]
    },
    plugins: [
-     ExtractCSS
+	 ExtractSass
    ]
 };
