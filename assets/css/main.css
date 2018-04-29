@@ -417,6 +417,9 @@ thead tr td:nth-child(2):hover {
   text-decoration: none;
   cursor: auto; }
 
+#page-actions {
+  background: #DCC7AA; }
+
 #tasks-container {
   background: #DCC7AA;
   height: inherit; }
