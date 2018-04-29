@@ -150,6 +150,10 @@ thead tr td:nth-child(2):hover {
  cursor: auto;
 }
 
+#page-actions {
+  background: $defaultBackground;
+}
+
 #tasks-container {
   background: $applecore;
   height: inherit;

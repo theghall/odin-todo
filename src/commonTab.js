@@ -34,6 +34,7 @@ const state = {
 
 const elemId = {
 	containerId: 'container',
+	footerId: 'footer',
 	pageActionsId: 'page-actions',
 	pageButtonsId: 'page-buttons',
  	pageFormId: 'page-form',
@@ -172,6 +173,7 @@ const utility = {
 		];
 		const legend = [ 'Undone', 'Done', 'Overdue'];
 		const footer = document.createElement('footer');
+		footer.id = elemId.footerId;
 
 		for (let i = 0; i < images.length; i++) {
 			let img = document.createElement('img');
@@ -207,8 +209,8 @@ const utility = {
 		utility.getRootElement().appendChild(displayContainer);
 	},
 
-	addPageActions: function(parentElem) {
-		const ids = [elemId.pageButtonsId, elemId.pageFormId];
+	addActionSection: function(parentElem) {
+		const ids = [elemId.pageButtonsId]
 		const parentDiv = document.createElement('div');
 		parentDiv.id = elemId.pageActionsId
 
@@ -341,6 +343,11 @@ const utility = {
 		};
 
 		return state.tasks.map((item, index)  => mapCallback(item, index)).filter(item => item !== null)
+	},
+
+	deleteFooter: function() {
+		const footer = document.getElementById(elemId.footerId);
+		footer.parentNode.removeChild(footer);
 	},
 	
 	deleteForm: function(formId) {

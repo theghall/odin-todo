@@ -207,6 +207,7 @@ const utility = {
 function buildProjectPage() {
 	todoGlobal.state.currentProject = null;
 
+	// Add Container for projects and tasks
 	todoGlobal.utility.addSection(
 		todoGlobal.utility.getRootElement(),
 		todoGlobal.elemId.projectsContainerId
@@ -217,13 +218,11 @@ function buildProjectPage() {
 	utility.buildProjectSection();
 	utility.addProjectBar(container);
 	utility.buildTaskSection();
-
-	todoGlobal.utility.addPageActions(container);
+	todoGlobal.utility.addActionSection(todoGlobal.utility.getRootElement());
 	const buttonsContainer = document.getElementById(todoGlobal.elemId.pageButtonsId);
 	utility.addPageButton(buttonsContainer);
 	todoGlobal.utility.addPageButtons(buttonsContainer);
-
-	todoGlobal.utility.addFooter(container);
+	todoGlobal.utility.addFooter(todoGlobal.utility.getRootElement());
 }
 
 export {buildProjectPage};

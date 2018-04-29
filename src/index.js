@@ -50,10 +50,14 @@ function makeTabActive(e) {
 	switch(e.target.textContent) {
 		case 'Tasks':
 			removeContainer(todoGlobal.elemId.projectsContainerId);
+			removeContainer(todoGlobal.elemId.pageActionsId);
+			todoGlobal.utility.deleteFooter();
 			buildTaskPage();
 			break;
 		case 'Projects':
 			removeContainer(todoGlobal.elemId.taskContainerId);
+			removeContainer(todoGlobal.elemId.pageActionsId);
+			todoGlobal.utility.deleteFooter();
 			buildProjectPage();
 			break;
 	}

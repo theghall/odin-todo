@@ -8,12 +8,13 @@ function buildTaskPage() {
 	todoGlobal.utility.addSection(todoGlobal.utility.getRootElement(),
 		todoGlobal.elemId.taskContainerId);
 
+	const rootElem = todoGlobal.utility.getRootElement();
 	const sectionElem = document.getElementById(todoGlobal.elemId.taskContainerId);
 
 	todoGlobal.utility.addTaskTable(sectionElem);
-	todoGlobal.utility.addPageActions(sectionElem);
-	todoGlobal.utility.addPageButtons(document.getElementById('page-buttons'));
-	todoGlobal.utility.addFooter(sectionElem);
+	todoGlobal.utility.addActionSection(rootElem);
+	todoGlobal.utility.addPageButtons(document.getElementById(todoGlobal.elemId.pageButtonsId));
+	todoGlobal.utility.addFooter(rootElem);
 }
 
 
