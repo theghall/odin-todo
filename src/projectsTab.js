@@ -10,7 +10,7 @@ const projectGlobal = {
 const utility = {
 	// Add functions - functions that add children to a parent element
 
-	addPageButton: function(parentElem) {
+	addPageButtons: function(parentElem) {
 		const button = todoGlobal.utility.createButton('Add Project');
 		button.addEventListener('click', utility.addProjectForm);
 		parentElem.appendChild(button);
@@ -26,11 +26,14 @@ const utility = {
 		table.id = todoGlobal.elemId.projectTableId;
 
 		todoGlobal.utility.addTableHeader(table, colHeaders);
+		const tbody = document.createElement('tbody');
+		table.appendChild(tbody);
 
 		for (let i = 0; i < todoGlobal.state.projects.length; i++) {
 			let tr = utility.createProjectRow(todoGlobal.state.projects[i], i);
-			table.appendChild(tr);
+			tbody.appendChild(tr);
 		}
+
 		parentElem.appendChild(table);
 	},
 
@@ -45,6 +48,8 @@ const utility = {
 			section.appendChild(span);
 		}
 
+		section.appendChild(document.createElement('hr'));
+
 		return section;
 	},
 
@@ -55,14 +60,14 @@ const utility = {
 
 		for (let i = 0; i < propOrder.length; i++) {
 			let prop = propOrder[i];
-			tr.appendChild(todoGlobal.utility.createDataCell(project.get(prop)));
+			tr.appendChild(todoGlobal.utility.createDataCell('td',project.get(prop)));
 			if (prop === 'name') tr.childNodes[1].addEventListener('click', utility.loadProject);}
 
 		const button = todoGlobal.utility.createButton('Delete');
 		button.addEventListener('click', utility.deleteProject);
 		todoGlobal.utility.addActionButton(tr, button);
 		// Put index of utility object in tasks array and hide it
-		tr.appendChild(todoGlobal.utility.createDataCell(index, true));
+		tr.appendChild(todoGlobal.utility.createDataCell('td',index, true));
 		return tr;
 	},
 
@@ -81,6 +86,7 @@ const utility = {
 			document.getElementById(todoGlobal.elemId.projectsContainerId), 
 			todoGlobal.elemId.tasksSectionId
 		);
+		utility.addProjectBar(document.getElementById(todoGlobal.elemId.tasksSectionId));
 
 		todoGlobal.utility.addTaskTable(document.getElementById(todoGlobal.elemId.tasksSectionId));
 	},
@@ -110,7 +116,7 @@ const utility = {
 	updateProjectBar: function(project) {
 		if (project === null) {
 			const parentElem = 
-				document.getElementById(todoGlobal.elemId.projectsContainerId);
+				document.getElementById(todoGlobal.elemId.tasksSectionId);
 			const section = utility.createProjectBar();
 			parentElem.replaceChild(section, 
 				document.getElementById(todoGlobal.elemId.projectStatusBarId));
@@ -133,8 +139,9 @@ const utility = {
 		span.textContent = projectGlobal.projectBarLabels[projectGlobal.projectBarLabels.length - 1] + 
 			' ' + percentComplete + '%';
 		section.appendChild(span);
+		section.appendChild(document.createElement('hr'));
 
-		const parentElem = document.getElementById(todoGlobal.elemId.projectsContainerId);
+		const parentElem = document.getElementById(todoGlobal.elemId.tasksSectionId);
 		parentElem.replaceChild(section, document.getElementById(todoGlobal.elemId.projectStatusBarId));
 	},
 
@@ -212,17 +219,15 @@ function buildProjectPage() {
 		todoGlobal.utility.getRootElement(),
 		todoGlobal.elemId.projectsContainerId
 	);
-	const container = document.getElementById(todoGlobal.elemId.projectsContainerId);
-	container.addEventListener('click', utility.handleContainerClicks);
+	const sectionElem = document.getElementById(todoGlobal.elemId.projectsContainerId);
+	sectionElem.addEventListener('click', utility.handleContainerClicks);
 
 	utility.buildProjectSection();
-	utility.addProjectBar(container);
 	utility.buildTaskSection();
-	todoGlobal.utility.addActionSection(todoGlobal.utility.getRootElement());
-	const buttonsContainer = document.getElementById(todoGlobal.elemId.pageButtonsId);
-	utility.addPageButton(buttonsContainer);
-	todoGlobal.utility.addPageButtons(buttonsContainer);
-	todoGlobal.utility.addFooter(todoGlobal.utility.getRootElement());
+	todoGlobal.utility.addActionSection(sectionElem);
+	utility.addPageButtons(document.getElementById(todoGlobal.elemId.pageButtonsId));
+	todoGlobal.utility.addPageButtons(document.getElementById(todoGlobal.elemId.pageButtonsId));
+	todoGlobal.utility.addFooter(sectionElem);
 }
 
 export {buildProjectPage};

@@ -6,6 +6,24 @@ $blueberry: #6B7A8F;
 $citrus: #F7C331;
 $defaultBackground: $applecore;
 
+/* Container dimensions */
+$appHeight: 525px;
+$projectTableMinHeight: 50px;
+$projectTableWidth: 350px;
+$taskTableWidth: 775px;
+$taskTableHeight: 400px;
+$projectTaskTableHeight: $taskTableHeight - 100px;
+
+/* Column dimensions */
+$statusColWidth: 28px;
+$nameColWidth: 175px;
+$descColWidth: 200px;
+$dueColWidth: 125px;
+$projectColWidth: 70px;
+$priorityColWidth: 80px;
+$actionColWidth: 80px;
+$actionColHeight: 36px;
+
 /* Universal */
 * {
   box-sizing: border-box;
@@ -16,13 +34,44 @@ body {
   background: $citrus;
 }
 
+footer {
+  background: $defaultBackground;
+  position: fixed;
+  top: $appHeight - 25px;
+  clear: both;
+}
+
+footer img, p {
+  display: inline;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 5px 5px; 
 }
 
+thead {
+  display: block;
+}
+
+tbody {
+  display: block;
+  overflow: auto;
+}
+
 td { 
   border-bottom: 1px solid $apricot;
+}
+
+tr td:nth-child(2):hover {
+  text-decoration: underline;
+  cursor: pointer;
+  
+}
+
+thead tr td:nth-child(2):hover {
+ text-decoration: none;
+ cursor: auto;
 }
 
 .hidden { 
@@ -49,7 +98,14 @@ td .btn {
 }
 
 #container {
-  height: 450px;
+  height: $appHeight;
+  background: $applecore;
+}
+
+#page-actions {
+  background: $defaultBackground;
+  position: absolute;
+  top: $appHeight - 150px;
 }
 
 div#popup-show {
@@ -69,7 +125,7 @@ div#popup-container {
 }
 
 #popup-form {
-  max-width:300px;
+  max-width:325px;
   min-width:250px;
   padding:10px 50px;
   border:2px solid gray;
@@ -129,88 +185,70 @@ div#popup-container {
 }
 
 /* taskTab */
-footer {
-  background: $defaultBackground;
-  position: sticky;
-  clear: both;
+
+#tasks-table,
+#tasks-table thead {
+  width: $taskTableWidth;
 }
 
-footer img, p {
-  display: inline;
-}
-
-tr td:nth-child(2):hover {
-  text-decoration: underline;
-  cursor: pointer;
-  
-}
-
-thead tr td:nth-child(2):hover {
- text-decoration: none;
- cursor: auto;
-}
-
-#page-actions {
-  background: $defaultBackground;
+#tasks-table tbody {
+  width: $taskTableWidth;
+  height: $taskTableHeight;
 }
 
 #tasks-container {
   background: $applecore;
-  height: inherit;
+  height: $appHeight - 100px;
+}
+
+
+th {
+  text-align: left;
+}
+
+/* Status */
+th:nth-child(1) {
+  width: $statusColWidth;
 }
 
 /* Name */
-td:nth-child(2) {
-  width: 175px;
+td:nth-child(2),
+th:nth-child(2) {
+  width: $nameColWidth;
 }
 
 /* Description */
-td:nth-child(3) {
-  width: 200px;
+td:nth-child(3),
+th:nth-child(3) {
+  width: $descColWidth;
 }
 
 /* Due Date */
-td:nth-child(4) { 
-  width: 100px;
+td:nth-child(4),
+th:nth-child(4) { 
+  width: $dueColWidth;
 }
 
 /* Project */
-td:nth-child(5) {
-  width: 70px;
+td:nth-child(5),
+th:nth-child(5) {
+  width: $projectColWidth;
 }
 
 /* Priority */
-td:nth-child(6) {
-  width: 80px;
+td:nth-child(6),
+th:nth-child(6) {
+  width: $priorityColWidth;
 } 
 
 /* Action */
 td:nth-child(7) {
-  height: 36px;
+  height: $actionColHeight
 }
 
 /* Project tab */
-#projects-container {
-  background: $defaultBackground;
-  height: inherit;
-}
 
-#projects {
-  width: 350px;
-  height: inherit;
-  float: left;
-}
-
-#projects-table {
-  border: 1px solid $apricot;
-  margin-border: 5px;
-  margin-right: 10px;
-}
-
-#projects-table  td {
-  border-bottom: none;
-};
-
+/* Project bar */
 span {
   display: inline-block;
 }
@@ -234,5 +272,51 @@ span:nth-child(3) {
 span:nth-child(4) {
   width: 150px;
 }
+
+#projects-container #page-actions {
+  postion: absolute;
+  top: $appHeight;
+  left: 375px;
+}
+#projects-container {
+  background: $defaultBackground;
+}
+
+#projects {
+  width: $projectTableWidth;
+  float: left;
+}
+
+#tasks {
+  height: $appHeight - 100px;
+  width: $taskTableWidth;
+  float: left;
+  margin-left: 20px;
+}
+
+#tasks-table tbody {
+  height: $projectTaskTableHeight;
+}
+
+#projects-table {
+  border: 1px solid $apricot;
+  margin-border: 5px;
+  margin-right: 10px;
+  width: $projectTableWidth
+}
+
+#projects-table thead {
+  width: $projectTableWidth;
+}
+
+#projects-table tbody {
+  width: $projectTableWidth;
+  min-height: $projectTableMinHeight;
+}
+
+#projects-table  td {
+  border-bottom: none;
+};
+
   
 /* ==================== end style.css =========================*/

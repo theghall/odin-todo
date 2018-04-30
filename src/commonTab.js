@@ -102,8 +102,8 @@ const utility = {
 		return button;
 	},
 
-	createDataCell: function(text, hidden) {
-		const td = document.createElement('td');
+	createDataCell: function(tag, text, hidden) {
+		const td = document.createElement(tag);
 		if (hidden) td.classList.add('hidden');
 		td.textContent = text;
 		return td;
@@ -149,14 +149,14 @@ const utility = {
 
 		for (let i = 0; i < propOrder.length; i++) {
 			let prop = propOrder[i];
-			tr.appendChild(utility.createDataCell(task.get(prop)));
+			tr.appendChild(utility.createDataCell('td',task.get(prop)));
 			if (prop === 'name') tr.childNodes[1].addEventListener('click', utility.addEditTaskForm);}
 
 		const button = utility.createButton('Delete');
 		button.addEventListener('click', utility.deleteTask);
 		utility.addActionButton(tr, button);
 		// Put index of utility object in tasks array and hide it
-		tr.appendChild(utility.createDataCell(index, true));
+		tr.appendChild(utility.createDataCell('td',index, true));
 		return tr;
 	},
 
@@ -237,11 +237,12 @@ const utility = {
 		// Need to do this since on the projects tab the row index will not
 		// neccesarily equal the array index when the user displays project tasks
 		const indices = utility.buildIndices(projectName);
+		const tbody = table.querySelector('tbody');
 
 		for (let i = 0; i < tasks.length; i++) {
 			let task = tasks[i];
 			let tr = utility.createTaskRow(task, indices[i]);
-			table.appendChild(tr);
+			tbody.appendChild(tr);
 		}
 	},
 
@@ -254,7 +255,7 @@ const utility = {
 		const tr = document.createElement('tr');
 
 		for (let i = 0; i < colHeaders.length; i++) {
-			tr.appendChild(utility.createDataCell(colHeaders[i]));
+			tr.appendChild(utility.createDataCell('th', colHeaders[i]));
 		}
 		thead.appendChild(tr);
 		parentElem.appendChild(thead);
@@ -264,6 +265,7 @@ const utility = {
 		const colHeaders = ['', 'Name', 'Description', 'Due Date', 'Project', 'Priority', 'Action'];
 		const table = utility.createTable(elemId.taskTableId);
 		utility.addTableHeader(table, colHeaders);
+		table.append(document.createElement('tbody'));
 		utility.addProjectTasks(parentElem, table, projectName);
 		parentElem.appendChild(table);
 	},
