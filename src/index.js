@@ -48,6 +48,7 @@ function makeTabActive(e) {
 	const activeClass = 'selected';
 
 	if (!e.target.classList.contains(activeClass)) {
+		todoGlobal.state.currentProject = null;
 		selectTab(e);
 
 		switch(e.target.textContent) {
