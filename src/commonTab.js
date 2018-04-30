@@ -308,6 +308,9 @@ const utility = {
 			optionElem.setAttribute('value', option);
 			if (item && option === item.get('project')) {
 					optionElem.setAttribute('selected', 'selected')
+			} else if (state.currentProject !== null
+						&& option === state.currentProject.get('name')) {
+					optionElem.setAttribute('selected', 'selected')
 			}
 			optionElem.textContent = option;
 			selectElem.appendChild(optionElem);
@@ -412,12 +415,13 @@ const utility = {
 		const taskIndex = (index >= 0 ? index : state.tasks.length-1);
 		const tr = utility.createTaskRow(state.tasks[taskIndex], taskIndex);
 		const parentElem = document.getElementById(elemId.taskTableId);
+		const tbody = parentElem.querySelector('tbody');
 
 		if (index >= 0) {
 			// Add one to allow for thead
 			parentElem.replaceChild(tr, parentElem.childNodes[index+1]);
 		} else {
-			parentElem.appendChild(tr);
+			tbody.appendChild(tr);
 		}
 	},
 
@@ -487,7 +491,8 @@ const utility = {
 
 	toggleComplete: function(e) {
 		const img = e.target;
-		const tableId = e.target.parentNode.parentNode.parentNode.id;
+		// tr->tbody->table
+		const tableId = e.target.parentNode.parentNode.parentNode.parentNode.id;
 		const cells = e.target.parentNode.parentNode.childNodes;
 		const index = parseInt(cells[cells.length - 1].textContent);
 
