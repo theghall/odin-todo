@@ -11,8 +11,10 @@ $appHeight: 525px;
 $projectTableMinHeight: 50px;
 $projectTableWidth: 350px;
 $taskTableWidth: 775px;
-$taskTableHeight: 400px;
-$projectTaskTableHeight: $taskTableHeight - 100px;
+$taskTableMinHeight: 50px;
+$taskTableMaxHeight: 400px;
+$projectTaskTableMinHeight: $taskTableMinHeight;
+$projectTaskTableMaxHeight: $taskTableMaxHeight - 100px;
 
 /* Column dimensions */
 $statusColWidth: 28px;
@@ -104,8 +106,7 @@ td .btn {
 
 #page-actions {
   background: $defaultBackground;
-  position: absolute;
-  top: $appHeight - 150px;
+  float: left;
 }
 
 div#popup-show {
@@ -187,13 +188,14 @@ div#popup-container {
 /* taskTab */
 
 #tasks-table,
-#tasks-table thead {
+#projects-container #tasks-table {
   width: $taskTableWidth;
 }
 
 #tasks-table tbody {
   width: $taskTableWidth;
-  height: $taskTableHeight;
+  min-height: $taskTableMinHeight;
+  max-height: $taskTableMaxHeight;
 }
 
 #tasks-container {
@@ -273,10 +275,15 @@ span:nth-child(4) {
   width: 150px;
 }
 
+#projects-container #tasks-table tbody {
+  width: $taskTableWidth;
+  min-height: $projectTaskTableMinHeight;
+  max-height: $projectTaskTableMaxHeight;
+}
+
 #projects-container #page-actions {
-  postion: absolute;
-  top: $appHeight - 100px;
-  left: 375px;
+  float: left;
+  clear: right;
 }
 #projects-container {
   background: $defaultBackground;
@@ -288,14 +295,9 @@ span:nth-child(4) {
 }
 
 #tasks {
-  height: $appHeight - 100px;
   width: $taskTableWidth;
   float: left;
   margin-left: 20px;
-}
-
-#tasks-table tbody {
-  height: $projectTaskTableHeight;
 }
 
 #projects-table {

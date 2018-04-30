@@ -362,8 +362,7 @@ td .btn {
 
 #page-actions {
   background: #DCC7AA;
-  position: absolute;
-  top: 375px; }
+  float: left; }
 
 div#popup-show {
   width: 100%;
@@ -434,12 +433,13 @@ div#popup-container {
 
 /* taskTab */
 #tasks-table,
-#tasks-table thead {
+#projects-container #tasks-table {
   width: 775px; }
 
 #tasks-table tbody {
   width: 775px;
-  height: 400px; }
+  min-height: 50px;
+  max-height: 400px; }
 
 #tasks-container {
   background: #DCC7AA;
@@ -502,10 +502,14 @@ span:nth-child(3) {
 span:nth-child(4) {
   width: 150px; }
 
+#projects-container #tasks-table tbody {
+  width: 775px;
+  min-height: 50px;
+  max-height: 300px; }
+
 #projects-container #page-actions {
-  postion: absolute;
-  top: 425px;
-  left: 375px; }
+  float: left;
+  clear: right; }
 
 #projects-container {
   background: #DCC7AA; }
@@ -515,13 +519,9 @@ span:nth-child(4) {
   float: left; }
 
 #tasks {
-  height: 425px;
   width: 775px;
   float: left;
   margin-left: 20px; }
-
-#tasks-table tbody {
-  height: 300px; }
 
 #projects-table {
   border: 1px solid #F7882F;

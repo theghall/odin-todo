@@ -162,6 +162,15 @@ const utility = {
 		return tr;
 	},
 
+	createTaskTable: function(projectName) {
+		const colHeaders = ['', 'Name', 'Description', 'Due Date', 'Project', 'Priority', 'Action'];
+		const table = utility.createTable(elemId.taskTableId);
+		utility.addTableHeader(table, colHeaders);
+		table.append(document.createElement('tbody'));
+		utility.addProjectTasks(table, projectName);
+		return table;
+	},
+
 	// Add functions, add child element(s) to a parent element
 	addActionButton: function(tr, button) {
 		const td = document.createElement('td');
@@ -234,7 +243,7 @@ const utility = {
 		parentElem.appendChild(button);
 	},
 
-	addProjectTasks: function(parentElem, table, projectName) {
+	addProjectTasks: function(table, projectName) {
 		const tasks = state.tasks.filter(item => projectName === null || item.get('project') === projectName);
 		// Need to do this since on the projects tab the row index will not
 		// neccesarily equal the array index when the user displays project tasks
@@ -264,11 +273,7 @@ const utility = {
 	},
 
 	addTaskTable: function(parentElem, projectName=null) {
-		const colHeaders = ['', 'Name', 'Description', 'Due Date', 'Project', 'Priority', 'Action'];
-		const table = utility.createTable(elemId.taskTableId);
-		utility.addTableHeader(table, colHeaders);
-		table.append(document.createElement('tbody'));
-		utility.addProjectTasks(parentElem, table, projectName);
+		const table = utility.createTaskTable(projectName);
 		parentElem.appendChild(table);
 	},
 

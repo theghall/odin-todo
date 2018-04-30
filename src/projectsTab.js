@@ -206,9 +206,11 @@ const utility = {
 		const index = todoGlobal.utility.getArrayIndex(row);
 		const project = todoGlobal.state.projects[index];
 		todoGlobal.state.currentProject = project;
-		utility.deleteTaskTable();
 		utility.updateProjectBar(project);
-		todoGlobal.utility.addTaskTable(document.getElementById(todoGlobal.elemId.tasksSectionId), projectName);
+		const parentElem = document.getElementById(todoGlobal.elemId.tasksSectionId);
+		const tableElem = document.getElementById(todoGlobal.elemId.taskTableId);
+		const taskTable = todoGlobal.utility.createTaskTable(project.get('name'));
+		parentElem.replaceChild(taskTable, tableElem);
 	},
 };
 
@@ -220,15 +222,16 @@ function buildProjectPage() {
 		todoGlobal.utility.getRootElement(),
 		todoGlobal.elemId.projectsContainerId
 	);
-	const sectionElem = document.getElementById(todoGlobal.elemId.projectsContainerId);
-	sectionElem.addEventListener('click', utility.handleContainerClicks);
+	const projectContainer = document.getElementById(todoGlobal.elemId.projectsContainerId);
+	projectContainer.addEventListener('click', utility.handleContainerClicks);
 
 	utility.buildProjectSection();
 	utility.buildTaskSection();
-	todoGlobal.utility.addActionSection(sectionElem);
+	const taskContainer = document.getElementById(todoGlobal.elemId.tasksSectionId);
+	todoGlobal.utility.addActionSection(taskContainer);
 	utility.addPageButtons(document.getElementById(todoGlobal.elemId.pageButtonsId));
 	todoGlobal.utility.addPageButtons(document.getElementById(todoGlobal.elemId.pageButtonsId));
-	todoGlobal.utility.addFooter(sectionElem);
+	todoGlobal.utility.addFooter(projectContainer);
 }
 
 export {buildProjectPage};
