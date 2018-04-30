@@ -45,17 +45,21 @@ function removeContainer(id) {
 }
 
 function makeTabActive(e) {
-	selectTab(e);
+	const activeClass = 'selected';
 
-	switch(e.target.textContent) {
-		case 'Tasks':
-			removeContainer(todoGlobal.elemId.projectsContainerId);
-			buildTaskPage();
-			break;
-		case 'Projects':
-			removeContainer(todoGlobal.elemId.taskContainerId);
-			buildProjectPage();
-			break;
+	if (!e.target.classList.contains(activeClass)) {
+		selectTab(e);
+
+		switch(e.target.textContent) {
+			case 'Tasks':
+				removeContainer(todoGlobal.elemId.projectsContainerId);
+				buildTaskPage();
+				break;
+			case 'Projects':
+				removeContainer(todoGlobal.elemId.taskContainerId);
+				buildProjectPage();
+				break;
+		}
 	}
 }
 
