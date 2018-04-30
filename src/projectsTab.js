@@ -104,12 +104,13 @@ const utility = {
 		const projectIndex = (index >= 0 ? index : todoGlobal.state.projects.length-1);
 		const tr = utility.createProjectRow(todoGlobal.state.projects[projectIndex], projectIndex);
 		const parentElem = document.getElementById(todoGlobal.elemId.projectTableId);
+		const tbody = parentElem.querySelector('tbody');
 
 		if (index >= 0) {
 			// Add one to allow for thead
 			parentElem.replaceChild(tr, parentElem.childNodes[index+1]);
 		} else {
-			parentElem.appendChild(tr);
+			tbody.appendChild(tr);
 		}
 	},
 
@@ -171,12 +172,13 @@ const utility = {
 
 	deleteProject: function(e) {
 		const table = document.getElementById(todoGlobal.elemId.projectTableId);
+		const tbody = table.querySelector('tbody');
 		const row = e.target.parentNode.parentNode;
 		const sibling = e.target.parentNode.parentNode.nextSibling;
 		const projectIndex = todoGlobal.utility.getArrayIndex(row);
 		const project = todoGlobal.state.projects[projectIndex];
 		todoGlobal.state.projects.splice(projectIndex, 1);
-		table.removeChild(row);
+		tbody.removeChild(row);
 		todoGlobal.utility.updateHiddenIndices(sibling);
 		utility.deleteProjectTasks(project.get('name'));
 		todoGlobal.state.currentProject = null;

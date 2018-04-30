@@ -414,12 +414,12 @@ const utility = {
 	renderTask: function(index) {
 		const taskIndex = (index >= 0 ? index : state.tasks.length-1);
 		const tr = utility.createTaskRow(state.tasks[taskIndex], taskIndex);
-		const parentElem = document.getElementById(elemId.taskTableId);
-		const tbody = parentElem.querySelector('tbody');
+		const table = document.getElementById(elemId.taskTableId);
+		const tbody = table.querySelector('tbody');
+		console.log(tbody.childNodes);
 
 		if (index >= 0) {
-			// Add one to allow for thead
-			parentElem.replaceChild(tr, parentElem.childNodes[index+1]);
+			tbody.replaceChild(tr, tbody.childNodes[index]);
 		} else {
 			tbody.appendChild(tr);
 		}
@@ -448,11 +448,12 @@ const utility = {
 
 	deleteTask: function(e) {
 		const table = document.getElementById(elemId.taskTableId);
+		const tbody = table.querySelector('tbody');
 		const row = e.target.parentNode.parentNode;
 		const sibling = e.target.parentNode.parentNode.nextSibling;
 		const taskIndex = utility.getArrayIndex(row);
 		state.tasks.splice(taskIndex, 1);
-		table.removeChild(row);
+		tbody.removeChild(row);
 		utility.updateHiddenIndices(sibling);
 	},
 
