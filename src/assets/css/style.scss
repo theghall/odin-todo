@@ -275,7 +275,7 @@ span:nth-child(4) {
 
 #projects-container #page-actions {
   postion: absolute;
-  top: $appHeight;
+  top: $appHeight - 100px;
   left: 375px;
 }
 #projects-container {
