@@ -297,6 +297,8 @@ template {
 [hidden] {
   display: none; }
 /* ==================== Begin style.css =======================*/
+/* Container dimensions */
+/* Column dimensions */
 /* Universal */
 * {
   box-sizing: border-box; }
@@ -305,12 +307,36 @@ body {
   font-family: 'Zilla Slab', serif;
   background: #F7C331; }
 
+footer {
+  background: #DCC7AA;
+  position: fixed;
+  top: 500px;
+  clear: both; }
+
+footer img, p {
+  display: inline; }
+
 table {
   border-collapse: collapse;
   border-spacing: 5px 5px; }
 
+thead {
+  display: block; }
+
+tbody {
+  display: block;
+  overflow: auto; }
+
 td {
   border-bottom: 1px solid #F7882F; }
+
+tr td:nth-child(2):hover {
+  text-decoration: underline;
+  cursor: pointer; }
+
+thead tr td:nth-child(2):hover {
+  text-decoration: none;
+  cursor: auto; }
 
 .hidden {
   display: none; }
@@ -331,7 +357,13 @@ td .btn {
   cursor: pointer; }
 
 #container {
-  height: 450px; }
+  height: 525px;
+  background: #DCC7AA; }
+
+#page-actions {
+  background: #DCC7AA;
+  position: absolute;
+  top: 375px; }
 
 div#popup-show {
   width: 100%;
@@ -348,7 +380,7 @@ div#popup-container {
   margin-left: -202px; }
 
 #popup-form {
-  max-width: 300px;
+  max-width: 325px;
   min-width: 250px;
   padding: 10px 50px;
   border: 2px solid gray;
@@ -401,47 +433,48 @@ div#popup-container {
   border-bottom-color: #DCC7AA; }
 
 /* taskTab */
-footer {
-  background: #DCC7AA;
-  position: sticky;
-  clear: both; }
+#tasks-table,
+#tasks-table thead {
+  width: 775px; }
 
-footer img, p {
-  display: inline; }
-
-tr td:nth-child(2):hover {
-  text-decoration: underline;
-  cursor: pointer; }
-
-thead tr td:nth-child(2):hover {
-  text-decoration: none;
-  cursor: auto; }
-
-#page-actions {
-  background: #DCC7AA; }
+#tasks-table tbody {
+  width: 775px;
+  height: 400px; }
 
 #tasks-container {
   background: #DCC7AA;
-  height: inherit; }
+  height: 425px; }
+
+th {
+  text-align: left; }
+
+/* Status */
+th:nth-child(1) {
+  width: 28px; }
 
 /* Name */
-td:nth-child(2) {
+td:nth-child(2),
+th:nth-child(2) {
   width: 175px; }
 
 /* Description */
-td:nth-child(3) {
+td:nth-child(3),
+th:nth-child(3) {
   width: 200px; }
 
 /* Due Date */
-td:nth-child(4) {
-  width: 100px; }
+td:nth-child(4),
+th:nth-child(4) {
+  width: 125px; }
 
 /* Project */
-td:nth-child(5) {
+td:nth-child(5),
+th:nth-child(5) {
   width: 70px; }
 
 /* Priority */
-td:nth-child(6) {
+td:nth-child(6),
+th:nth-child(6) {
   width: 80px; }
 
 /* Action */
@@ -449,23 +482,7 @@ td:nth-child(7) {
   height: 36px; }
 
 /* Project tab */
-#projects-container {
-  background: #DCC7AA;
-  height: inherit; }
-
-#projects {
-  width: 350px;
-  height: inherit;
-  float: left; }
-
-#projects-table {
-  border: 1px solid #F7882F;
-  margin-border: 5px;
-  margin-right: 10px; }
-
-#projects-table td {
-  border-bottom: none; }
-
+/* Project bar */
 span {
   display: inline-block; }
 
@@ -484,5 +501,42 @@ span:nth-child(3) {
 /* Complete */
 span:nth-child(4) {
   width: 150px; }
+
+#projects-container #page-actions {
+  postion: absolute;
+  top: 525px;
+  left: 375px; }
+
+#projects-container {
+  background: #DCC7AA; }
+
+#projects {
+  width: 350px;
+  float: left; }
+
+#tasks {
+  height: 425px;
+  width: 775px;
+  float: left;
+  margin-left: 20px; }
+
+#tasks-table tbody {
+  height: 300px; }
+
+#projects-table {
+  border: 1px solid #F7882F;
+  margin-border: 5px;
+  margin-right: 10px;
+  width: 350px; }
+
+#projects-table thead {
+  width: 350px; }
+
+#projects-table tbody {
+  width: 350px;
+  min-height: 50px; }
+
+#projects-table td {
+  border-bottom: none; }
 
 /* ==================== end style.css =========================*/
