@@ -4,7 +4,7 @@ import * as myTodo from './todo';
 import * as todoGlobal from './commonTab';
 
 const projectGlobal = {
-	projectBarLabels: ['Project:', 'Desc:', 'Due:', 'Priority', 'Complete:']
+	projectBarLabels: ['Project:', 'Desc:', 'Due:', 'Priority:', 'Complete:']
 };
 
 const utility = {
@@ -127,8 +127,7 @@ const utility = {
 		const section = document.createElement('section');
 		section.id = todoGlobal.elemId.projectStatusBarId;
 
-		// Labels include percent complete, which is calculated, so -1
-		for (let i = 0; i < propOrder.length - 1; i++) {
+		for (let i = 0; i < propOrder.length; i++) {
 			let span = document.createElement('span');
 			span.textContent = projectGlobal.projectBarLabels[i] + ' '
 				+ project.get(propOrder[i]);

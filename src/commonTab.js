@@ -67,7 +67,8 @@ const forms = {
 			{tag: 'label', attrs: [{name: 'for', value: 'project'}], text: 'project'},
 			{tag: 'select', attrs: [{name: 'name', value: 'project'}], text: '', required: false},
 			{tag: 'label', attrs: [{name: 'for', value: 'priority'}], text: 'Priority'},
-			{tag: 'input', attrs: [{name: 'type', value: 'text'}, {name: 'name', value: 'priority'}], text: '', required: true},
+			{tag: 'input', attrs: [{name: 'type', value: 'number'},
+				{name: 'name', value: 'priority'}, {name: 'min', value: '1'}, {name: 'max', value: '10'}], text: '', required: true},
 		],
 
 		projectForm: [
@@ -78,7 +79,8 @@ const forms = {
 			{tag: 'label', attrs: [{name: 'for', value: 'date'}], text: 'Due Date'},
 			{tag: 'input', attrs: [{name: 'type', value: 'date'}, {name: 'name', value: 'due'}], text: '', required: true},
 			{tag: 'label', attrs: [{name: 'for', value: 'priority'}], text: 'Priority'},
-			{tag: 'input', attrs: [{name: 'type', value: 'text'}, {name: 'name', value: 'priority'}], text: '', required: true},
+			{tag: 'input', attrs: [{name: 'type', value: 'number'},
+				{name: 'name', value: 'priority'}, {name: 'min', value: '1'}, {name: 'max', value: '10'}], text: '', required: true},
 		]
 };
 
