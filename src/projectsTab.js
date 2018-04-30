@@ -178,7 +178,10 @@ const utility = {
 		const project = todoGlobal.state.projects[projectIndex];
 		todoGlobal.state.projects.splice(projectIndex, 1);
 		tbody.removeChild(row);
+		// Once project is deleted from the arrey, the hidden indices will
+		// be off, so they need to be updated
 		todoGlobal.utility.updateHiddenIndices(sibling);
+		// Delete tasks associated with this project
 		utility.deleteProjectTasks(project.get('name'));
 		todoGlobal.state.currentProject = null;
 		utility.deleteTaskTable();
@@ -201,6 +204,7 @@ const utility = {
 	},
 
 	loadProject: function(e) {
+		// Display all associated tasks for a project 
 		const projectName = e.target.textContent;
 		const row = e.target.parentNode;
 		const index = todoGlobal.utility.getArrayIndex(row);

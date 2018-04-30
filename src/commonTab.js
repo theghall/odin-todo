@@ -147,6 +147,7 @@ const utility = {
 	createTaskRow: function(task, index) {
 		const propOrder = ['name', 'desc', 'due', 'project', 'priority']
 		const tr = document.createElement('tr');
+		// value of done is represented by an icon
 		tr.appendChild(utility.createStatusCell(task));
 
 		for (let i = 0; i < propOrder.length; i++) {
@@ -198,7 +199,7 @@ const utility = {
 	},
 
 	addModalForm: function(formItems, saveButton, data=null, hidden=null) {
-		// This div sets up form to be "modal"
+		// This div sets up form to be "modal" by CSS
 		const displayContainer = document.createElement('div');
 		displayContainer.id = elemId.popupDisplayId;
 		displayContainer.classList.add('block');
@@ -301,6 +302,7 @@ const utility = {
 	},
 
 	addProjectOptions: function(item = null) {
+		// Add a dropdown list of current projects, if any
 		const form = document.getElementById(elemId.popupFormId);
 		const selectElem = form.querySelector('select[name="project"]');
 
@@ -335,6 +337,8 @@ const utility = {
 	},
 
 	buildForm: function(form, items, data=null, hidden=null) { 
+		// Take array defining an HTML form item and turn it into HTML Element
+		// with all its attributes
 		if (hidden) utility.addHiddenFields(form, hidden);
 		for (let i = 0; i < items.length; i++) {
 			let tag = items[i].tag;
@@ -353,7 +357,7 @@ const utility = {
 		const mapCallback = function(item, index) {
 			return (projectName == null || item.get('project') === projectName ? index : null);
 		};
-
+		// Strip out nulls from above, leaving us with the indices we want
 		return state.tasks.map((item, index)  => mapCallback(item, index)).filter(item => item !== null)
 	},
 
@@ -461,6 +465,8 @@ const utility = {
 		const taskIndex = utility.getArrayIndex(row);
 		state.tasks.splice(taskIndex, 1);
 		tbody.removeChild(row);
+		// Now that the task is deleted from the array, the hidden indices will
+		// be off, so they need to be updated
 		utility.updateHiddenIndices(sibling);
 	},
 

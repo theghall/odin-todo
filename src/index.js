@@ -47,6 +47,7 @@ function removeContainer(id) {
 function makeTabActive(e) {
 	const activeClass = 'selected';
 
+	// Ignore click if on currently selected tab
 	if (!e.target.classList.contains(activeClass)) {
 		todoGlobal.state.currentProject = null;
 		selectTab(e);
