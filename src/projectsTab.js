@@ -1,4 +1,7 @@
-
+/**
+ * @format
+ */
+require('normalize.css');
 
 import * as myTodo from './todo';
 import * as todoGlobal from './commonTab';
@@ -60,8 +63,11 @@ const utility = {
 
     for (let i = 0; i < propOrder.length; i += 1) {
       const prop = propOrder[i];
-      tr.appendChild(todoGlobal.utility.createDataCell('td', project.get(prop)));
-      if (prop === 'name') tr.childNodes[1].addEventListener('click', utility.loadProject);
+      tr.appendChild(
+        todoGlobal.utility.createDataCell('td', project.get(prop)),
+      );
+      if (prop === 'name')
+        tr.childNodes[1].addEventListener('click', utility.loadProject);
     }
 
     const button = todoGlobal.utility.createButton('Delete');
@@ -79,7 +85,9 @@ const utility = {
       document.getElementById(todoGlobal.elemId.projectsContainerId),
       todoGlobal.elemId.projectsSectionId,
     );
-    utility.addProjectTable(document.getElementById(todoGlobal.elemId.projectsSectionId));
+    utility.addProjectTable(
+      document.getElementById(todoGlobal.elemId.projectsSectionId),
+    );
   },
 
   buildTaskSection() {
@@ -87,24 +95,35 @@ const utility = {
       document.getElementById(todoGlobal.elemId.projectsContainerId),
       todoGlobal.elemId.tasksSectionId,
     );
-    utility.addProjectBar(document.getElementById(todoGlobal.elemId.tasksSectionId));
+    utility.addProjectBar(
+      document.getElementById(todoGlobal.elemId.tasksSectionId),
+    );
 
-    todoGlobal.utility.addTaskTable(document.getElementById(todoGlobal.elemId.tasksSectionId));
+    todoGlobal.utility.addTaskTable(
+      document.getElementById(todoGlobal.elemId.tasksSectionId),
+    );
   },
 
   calcPercentComplete(projectName) {
-    const tasks = todoGlobal.state.tasks.filter(item =>
-      projectName === null || item.get('project') === projectName);
+    const tasks = todoGlobal.state.tasks.filter(
+      item => projectName === null || item.get('project') === projectName,
+    );
     const numTasks = tasks.length;
     const numComplete = tasks.filter(item => item.get('done') === true).length;
 
-    return Math.round((numTasks === 0 ? 0 : (numComplete / numTasks) * 100));
+    return Math.round(numTasks === 0 ? 0 : numComplete / numTasks * 100);
   },
 
   renderProject(index) {
-    const projectIndex = (index >= 0 ? index : todoGlobal.state.projects.length - 1);
-    const tr = utility.createProjectRow(todoGlobal.state.projects[projectIndex], projectIndex);
-    const parentElem = document.getElementById(todoGlobal.elemId.projectTableId);
+    const projectIndex =
+      index >= 0 ? index : todoGlobal.state.projects.length - 1;
+    const tr = utility.createProjectRow(
+      todoGlobal.state.projects[projectIndex],
+      projectIndex,
+    );
+    const parentElem = document.getElementById(
+      todoGlobal.elemId.projectTableId,
+    );
     const tbody = parentElem.querySelector('tbody');
 
     if (index >= 0) {
@@ -117,7 +136,9 @@ const utility = {
 
   updateProjectBar(project) {
     if (project === null) {
-      const parentElem = document.getElementById(todoGlobal.elemId.tasksSectionId);
+      const parentElem = document.getElementById(
+        todoGlobal.elemId.tasksSectionId,
+      );
       const section = utility.createProjectBar();
       parentElem.replaceChild(
         section,
@@ -131,18 +152,26 @@ const utility = {
 
     for (let i = 0; i < propOrder.length; i += 1) {
       const span = document.createElement('span');
-      span.textContent = `${projectGlobal.projectBarLabels[i]} ${project.get(propOrder[i])}`;
+      span.textContent = `${projectGlobal.projectBarLabels[i]} ${project.get(
+        propOrder[i],
+      )}`;
       section.appendChild(span);
     }
     const percentComplete = utility.calcPercentComplete(project.get('name'));
     const span = document.createElement('span');
-    span.textContent =
-        `${projectGlobal.projectBarLabels[projectGlobal.projectBarLabels.length - 1]} ${percentComplete}%`;
+    span.textContent = `${
+      projectGlobal.projectBarLabels[projectGlobal.projectBarLabels.length - 1]
+    } ${percentComplete}%`;
     section.appendChild(span);
     section.appendChild(document.createElement('hr'));
 
-    const parentElem = document.getElementById(todoGlobal.elemId.tasksSectionId);
-    parentElem.replaceChild(section, document.getElementById(todoGlobal.elemId.projectStatusBarId));
+    const parentElem = document.getElementById(
+      todoGlobal.elemId.tasksSectionId,
+    );
+    parentElem.replaceChild(
+      section,
+      document.getElementById(todoGlobal.elemId.projectStatusBarId),
+    );
   },
 
   // Event listener helpers
@@ -165,7 +194,13 @@ const utility = {
   // Event listeners
 
   addProjectForm(e) {
-    const saveButton = todoGlobal.utility.createModalButton('submit', 'add-project', ['btn'], 'Add Project', utility.handleSaveProject);
+    const saveButton = todoGlobal.utility.createModalButton(
+      'submit',
+      'add-project',
+      ['btn'],
+      'Add Project',
+      utility.handleSaveProject,
+    );
     todoGlobal.utility.addModalForm(todoGlobal.forms.projectForm, saveButton);
   },
 
@@ -186,7 +221,9 @@ const utility = {
     todoGlobal.state.currentProject = null;
     utility.deleteTaskTable();
     utility.updateProjectBar(project);
-    todoGlobal.utility.addTaskTable(document.getElementById(todoGlobal.elemId.tasksSectionId));
+    todoGlobal.utility.addTaskTable(
+      document.getElementById(todoGlobal.elemId.tasksSectionId),
+    );
   },
 
   handleContainerClicks(e) {
@@ -210,7 +247,9 @@ const utility = {
     const project = todoGlobal.state.projects[index];
     todoGlobal.state.currentProject = project;
     utility.updateProjectBar(project);
-    const parentElem = document.getElementById(todoGlobal.elemId.tasksSectionId);
+    const parentElem = document.getElementById(
+      todoGlobal.elemId.tasksSectionId,
+    );
     const tableElem = document.getElementById(todoGlobal.elemId.taskTableId);
     const taskTable = todoGlobal.utility.createTaskTable(project.get('name'));
     parentElem.replaceChild(taskTable, tableElem);
@@ -225,15 +264,23 @@ function buildProjectPage() {
     todoGlobal.utility.getRootElement(),
     todoGlobal.elemId.projectsContainerId,
   );
-  const projectContainer = document.getElementById(todoGlobal.elemId.projectsContainerId);
+  const projectContainer = document.getElementById(
+    todoGlobal.elemId.projectsContainerId,
+  );
   projectContainer.addEventListener('click', utility.handleContainerClicks);
 
   utility.buildProjectSection();
   utility.buildTaskSection();
-  const taskContainer = document.getElementById(todoGlobal.elemId.tasksSectionId);
+  const taskContainer = document.getElementById(
+    todoGlobal.elemId.tasksSectionId,
+  );
   todoGlobal.utility.addActionSection(taskContainer);
-  utility.addPageButtons(document.getElementById(todoGlobal.elemId.pageButtonsId));
-  todoGlobal.utility.addPageButtons(document.getElementById(todoGlobal.elemId.pageButtonsId));
+  utility.addPageButtons(
+    document.getElementById(todoGlobal.elemId.pageButtonsId),
+  );
+  todoGlobal.utility.addPageButtons(
+    document.getElementById(todoGlobal.elemId.pageButtonsId),
+  );
   todoGlobal.utility.addFooter(projectContainer);
 }
 

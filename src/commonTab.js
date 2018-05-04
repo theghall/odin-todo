@@ -1,3 +1,6 @@
+/**
+ * @format
+ */
 import isPast from 'date-fns/is_past';
 import parse from 'date-fns/parse';
 import * as myTodo from './todo';
@@ -10,13 +13,14 @@ const state = {
     if (localStorage) {
       const tasks = localStorage.getItem('tasks');
       const projects = localStorage.getItem('projects');
-      if (tasks) state.tasks = JSON.parse(tasks).map(task => myTodo.baseTodoItem(task));
+      if (tasks)
+        state.tasks = JSON.parse(tasks).map(task => myTodo.baseTodoItem(task));
       if (projects) {
-        state.projects = (JSON.parse(projects).map(project => myTodo.baseTodoItem(project)));
+        state.projects = JSON.parse(projects).map(project =>
+          myTodo.baseTodoItem(project)
+        );
       }
-    } else {
-      alert('Cannot load any data');
-    }
+    } else { alert('Cannot load any data'); }
   },
   saveData() {
     if (localStorage) {
@@ -58,28 +62,59 @@ const resources = {
 const forms = {
   taskForm: [
     {
-      tag: 'label', attrs: [{ name: 'for', value: 'name' }], text: 'Name', required: null,
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'name' }],
+      text: 'Name',
+      required: null,
     },
     {
-      tag: 'input', attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'name' }], text: '', required: true,
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'name' }],
+      text: '',
+      required: true,
     },
-    { tag: 'label', attrs: [{ name: 'for', value: 'desc' }], text: 'Description' },
     {
-      tag: 'input', attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'desc' }], text: '', required: true,
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'desc' }],
+      text: 'Description',
+    },
+    {
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'desc' }],
+      text: '',
+      required: true,
     },
     { tag: 'label', attrs: [{ name: 'for', value: 'date' }], text: 'Due Date' },
     {
-      tag: 'input', attrs: [{ name: 'type', value: 'date' }, { name: 'name', value: 'due' }], text: '', required: true,
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'date' }, { name: 'name', value: 'due' }],
+      text: '',
+      required: true,
     },
-    { tag: 'label', attrs: [{ name: 'for', value: 'project' }], text: 'project' },
     {
-      tag: 'select', attrs: [{ name: 'name', value: 'project' }], text: '', required: false,
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'project' }],
+      text: 'project',
     },
-    { tag: 'label', attrs: [{ name: 'for', value: 'priority' }], text: 'Priority' },
+    {
+      tag: 'select',
+      attrs: [{ name: 'name', value: 'project' }],
+      text: '',
+      required: false,
+    },
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'priority' }],
+      text: 'Priority',
+    },
     {
       tag: 'input',
-      attrs: [{ name: 'type', value: 'number' },
-        { name: 'name', value: 'priority' }, { name: 'min', value: '1' }, { name: 'max', value: '10' }],
+      attrs: [
+        { name: 'type', value: 'number' },
+        { name: 'name', value: 'priority' },
+        { name: 'min', value: '1' },
+        { name: 'max', value: '10' },
+      ],
       text: '',
       required: true,
     },
@@ -87,30 +122,53 @@ const forms = {
 
   projectForm: [
     {
-      tag: 'label', attrs: [{ name: 'for', value: 'name' }], text: 'Name', required: null,
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'name' }],
+      text: 'Name',
+      required: null,
     },
     {
-      tag: 'input', attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'name' }], text: '', required: true,
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'name' }],
+      text: '',
+      required: true,
     },
-    { tag: 'label', attrs: [{ name: 'for', value: 'desc' }], text: 'Description' },
     {
-      tag: 'input', attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'desc' }], text: '', required: true,
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'desc' }],
+      text: 'Description',
+    },
+    {
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'desc' }],
+      text: '',
+      required: true,
     },
     { tag: 'label', attrs: [{ name: 'for', value: 'date' }], text: 'Due Date' },
     {
-      tag: 'input', attrs: [{ name: 'type', value: 'date' }, { name: 'name', value: 'due' }], text: '', required: true,
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'date' }, { name: 'name', value: 'due' }],
+      text: '',
+      required: true,
     },
-    { tag: 'label', attrs: [{ name: 'for', value: 'priority' }], text: 'Priority' },
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'priority' }],
+      text: 'Priority',
+    },
     {
       tag: 'input',
-      attrs: [{ name: 'type', value: 'number' },
-        { name: 'name', value: 'priority' }, { name: 'min', value: '1' }, { name: 'max', value: '10' }],
+      attrs: [
+        { name: 'type', value: 'number' },
+        { name: 'name', value: 'priority' },
+        { name: 'min', value: '1' },
+        { name: 'max', value: '10' },
+      ],
       text: '',
       required: true,
     },
   ],
 };
-
 
 const utility = {
   // Create Functions -- return an element
@@ -125,7 +183,9 @@ const utility = {
     const button = document.createElement('button');
     button.setAttribute('type', type);
     button.id = id;
-    for (let i = 0; i < classes.length; i += 1) { button.classList.add(classes[i]); }
+    for (let i = 0; i < classes.length; i += 1) {
+      button.classList.add(classes[i]);
+    }
     button.textContent = text;
     button.addEventListener('click', callback);
     return button;
@@ -180,7 +240,8 @@ const utility = {
     for (let i = 0; i < propOrder.length; i += 1) {
       const prop = propOrder[i];
       tr.appendChild(utility.createDataCell('td', task.get(prop)));
-      if (prop === 'name') tr.childNodes[1].addEventListener('click', utility.addEditTaskForm);
+      if (prop === 'name')
+        tr.childNodes[1].addEventListener('click', utility.addEditTaskForm);
     }
 
     const button = utility.createButton('Delete');
@@ -192,7 +253,15 @@ const utility = {
   },
 
   createTaskTable(projectName) {
-    const colHeaders = ['', 'Name', 'Description', 'Due Date', 'Project', 'Priority', 'Action'];
+    const colHeaders = [
+      '',
+      'Name',
+      'Description',
+      'Due Date',
+      'Project',
+      'Priority',
+      'Action',
+    ];
     const table = utility.createTable(elemId.taskTableId);
     utility.addTableHeader(table, colHeaders);
     table.append(document.createElement('tbody'));
@@ -208,9 +277,7 @@ const utility = {
   },
 
   addFooter(parentElem) {
-    const images = [
-      resources.openImg, resources.doneImg, resources.overdueImg,
-    ];
+    const images = [resources.openImg, resources.doneImg, resources.overdueImg];
     const legend = ['Undone', 'Done', 'Overdue'];
     const footer = document.createElement('footer');
     footer.id = elemId.footerId;
@@ -227,7 +294,7 @@ const utility = {
   },
 
   addModalForm(formItems, saveButton, data = null, hidden = null) {
-    // This div sets up form to be "modal" by CSS
+    // This div sets up form to be 'modal' by CSS
     const displayContainer = document.createElement('div');
     displayContainer.id = elemId.popupDisplayId;
     displayContainer.classList.add('block');
@@ -273,7 +340,9 @@ const utility = {
   },
 
   addProjectTasks(table, projectName) {
-    const tasks = state.tasks.filter(item => projectName === null || item.get('project') === projectName);
+    const tasks = state.tasks.filter(
+      item => projectName === null || item.get('project') === projectName
+    );
     // Need to do this since on the projects tab the row index will not
     // neccesarily equal the array index when the user displays project tasks
     const indices = utility.buildIndices(projectName);
@@ -344,7 +413,10 @@ const utility = {
       optionElem.setAttribute('value', option);
       if (item && option === item.get('project')) {
         optionElem.setAttribute('selected', 'selected');
-      } else if (state.currentProject !== null && option === state.currentProject.get('name')) {
+      } else if (
+        state.currentProject !== null &&
+        option === state.currentProject.get('name')
+      ) {
         optionElem.setAttribute('selected', 'selected');
       }
       optionElem.textContent = option;
@@ -356,10 +428,14 @@ const utility = {
     const button = document.createElement('button');
     button.setAttribute('type', type);
     button.id = id;
-    for (let i = 0; i < classes.length; i += 1) { button.classList.add(classes[i]); }
+    for (let i = 0; i < classes.length; i += 1) {
+      button.classList.add(classes[i]);
+    }
     button.textContent = text;
     form.appendChild(button);
-    button.addEventListener('click', (e) => { callback(e, form); });
+    button.addEventListener('click', e => {
+      callback(e, form);
+    });
   },
 
   buildForm(form, items, data = null, hidden = null) {
@@ -379,11 +455,15 @@ const utility = {
   },
 
   buildIndices(projectName) {
-    const mapCallback = function (item, index) {
-      return (projectName == null || item.get('project') === projectName ? index : null);
+    const mapCallback = function(item, index) {
+      return projectName == null || item.get('project') === projectName
+        ? index
+        : null;
     };
     // Strip out nulls from above, leaving us with the indices we want
-    return state.tasks.map((item, index) => mapCallback(item, index)).filter(item => item !== null);
+    return state.tasks
+      .map((item, index) => mapCallback(item, index))
+      .filter(item => item !== null);
   },
 
   deleteFooter() {
@@ -455,7 +535,7 @@ const utility = {
   },
 
   renderTask(index) {
-    const taskIndex = (index >= 0 ? index : state.tasks.length - 1);
+    const taskIndex = index >= 0 ? index : state.tasks.length - 1;
     const tr = utility.createTaskRow(state.tasks[taskIndex], taskIndex);
     const table = document.getElementById(elemId.taskTableId);
     const tbody = table.querySelector('tbody');
@@ -480,7 +560,13 @@ const utility = {
 
   // Event Listeners
   addTaskForm(e) {
-    const saveButton = utility.createModalButton('submit', 'add-task', ['btn'], 'Add Task', utility.handleAddTask);
+    const saveButton = utility.createModalButton(
+      'submit',
+      'add-task',
+      ['btn'],
+      'Add Task',
+      utility.handleAddTask
+    );
     utility.addModalForm(forms.taskForm, saveButton);
     utility.addProjectOptions();
   },
@@ -505,8 +591,19 @@ const utility = {
   addEditTaskForm(e) {
     const taskIndex = utility.getArrayIndex(e.target.parentNode);
     const hidden = [{ name: 'itemindex', value: taskIndex }];
-    const updateButton = utility.createModalButton('submit', 'update-task', ['btn'], 'Update Task', utility.handleUpdateTask);
-    utility.addModalForm(forms.taskForm, updateButton, state.tasks[taskIndex], hidden);
+    const updateButton = utility.createModalButton(
+      'submit',
+      'update-task',
+      ['btn'],
+      'Update Task',
+      utility.handleUpdateTask
+    );
+    utility.addModalForm(
+      forms.taskForm,
+      updateButton,
+      state.tasks[taskIndex],
+      hidden
+    );
     utility.addProjectOptions(state.tasks[taskIndex]);
   },
 
@@ -542,7 +639,8 @@ const utility = {
     const cells = e.target.parentNode.parentNode.childNodes;
     const index = parseInt(cells[cells.length - 1].textContent, 10);
 
-    const itemArray = (tableId === elemId.taskTableId ? state.tasks : state.projects);
+    const itemArray =
+      tableId === elemId.taskTableId ? state.tasks : state.projects;
 
     if (itemArray[index].get('done')) {
       if (isPast(parse(itemArray[index].get('due')))) {
@@ -556,7 +654,6 @@ const utility = {
     itemArray[index].toggleDone();
     img.addEventListener('click', utility.toggleComplete);
   },
-
 };
 
 export { state, elemId, forms, resources, utility };

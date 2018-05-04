@@ -1,3 +1,6 @@
+/**
+ * @format
+ */
 require('normalize.css');
 // normalize.css must be loaded first before app css, so disable eslint check
 /* eslint-disable import/first */
@@ -26,6 +29,7 @@ function selectTab(e) {
     if (childrenArr[i].tagName === 'UL') {
       const ulChildrenArr = [...childrenArr[i].children];
       for (let j = 0; j < ulChildrenArr.length; j += 1) {
+        // Once active tab is found make other tab active
         if (ulChildrenArr[j].classList.contains(activeClass)) {
           ulChildrenArr[j].classList.remove(activeClass);
           e.target.classList.add(activeClass);
@@ -63,7 +67,9 @@ function makeTabActive(e) {
 // Support functions
 
 function addTabListener(target) {
-  target.addEventListener('click', (e) => { makeTabActive(e); });
+  target.addEventListener('click', e => {
+    makeTabActive(e);
+  });
 }
 
 function createTabMenu() {
@@ -92,7 +98,6 @@ function createTabMenu() {
   nav.appendChild(ul);
   container.appendChild(nav);
 }
-
 
 function ready() {
   todoGlobal.state.loadData();

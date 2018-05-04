@@ -1,3 +1,6 @@
+/**
+ * @format
+ */
 import * as todoGlobal from './commonTab';
 
 function buildTaskPage() {
@@ -6,14 +9,16 @@ function buildTaskPage() {
     todoGlobal.elemId.taskContainerId,
   );
 
-  const sectionElem = document.getElementById(todoGlobal.elemId.taskContainerId);
+  const sectionElem = document.getElementById(
+    todoGlobal.elemId.taskContainerId,
+  );
 
   todoGlobal.utility.addTaskTable(sectionElem);
   todoGlobal.utility.addActionSection(sectionElem);
-  todoGlobal.utility.addPageButtons(document.getElementById(todoGlobal.elemId.pageButtonsId));
+  todoGlobal.utility.addPageButtons(
+    document.getElementById(todoGlobal.elemId.pageButtonsId),
+  );
   todoGlobal.utility.addFooter(sectionElem);
 }
 
-
 export default buildTaskPage;
-

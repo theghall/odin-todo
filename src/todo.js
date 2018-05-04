@@ -1,5 +1,6 @@
-
-
+/**
+ * @format
+ */
 const toggler = state => ({
   toggleDone: () => { state.done = (!state.done); },
 });
