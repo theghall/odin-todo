@@ -36,17 +36,32 @@
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -74,65 +89,1568 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);\n/* harmony import */ var _assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _tasksTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);\n/* harmony import */ var _projectsTab__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);\n/* harmony import */ var _commonTab__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);\n/**\n * @format\n */\n__webpack_require__(1);\n// normalize.css must be loaded first before app css, so disable eslint check\n/* eslint-disable import/first */\n\n\n\n\n/* eslint-enable import/first */\n\n// Event listener helpers\nfunction removeContainer(id) {\n  const elem = document.getElementById(id);\n  if (elem) elem.parentNode.removeChild(elem);\n}\n\nfunction selectTab(e) {\n  const activeClass = 'selected';\n\n  // Find menu associated with '#main-nav'\n  const mainNav = document.getElementById('main-nav');\n  const childrenArr = [...mainNav.children];\n\n  // Find currently selected item, deselect it, select clicked item\n  for (let i = 0; i < childrenArr.length; i += 1) {\n    // Should be menu we're looking for\n    if (childrenArr[i].tagName === 'UL') {\n      const ulChildrenArr = [...childrenArr[i].children];\n      for (let j = 0; j < ulChildrenArr.length; j += 1) {\n        // Once active tab is found make other tab active\n        if (ulChildrenArr[j].classList.contains(activeClass)) {\n          ulChildrenArr[j].classList.remove(activeClass);\n          e.target.classList.add(activeClass);\n          break;\n        }\n      }\n      break;\n    }\n  }\n}\n\n// Eventlisteners\n\nfunction makeTabActive(e) {\n  const activeClass = 'selected';\n\n  // Ignore click if on currently selected tab\n  if (!e.target.classList.contains(activeClass)) {\n    _commonTab__WEBPACK_IMPORTED_MODULE_3__[\"state\"].currentProject = null;\n    selectTab(e);\n\n    switch (e.target.textContent) {\n      case 'Tasks':\n        removeContainer(_commonTab__WEBPACK_IMPORTED_MODULE_3__[\"elemId\"].projectsContainerId);\n        Object(_tasksTab__WEBPACK_IMPORTED_MODULE_1__[\"default\"])();\n        break;\n      case 'Projects':\n        removeContainer(_commonTab__WEBPACK_IMPORTED_MODULE_3__[\"elemId\"].taskContainerId);\n        Object(_projectsTab__WEBPACK_IMPORTED_MODULE_2__[\"default\"])();\n        break;\n    }\n  }\n}\n\n// Support functions\n\nfunction addTabListener(target) {\n  target.addEventListener('click', e => {\n    makeTabActive(e);\n  });\n}\n\nfunction createTabMenu() {\n  const menuItems = ['Tasks', 'Projects'];\n\n  const container = document.getElementById('container');\n\n  const nav = document.createElement('nav');\n  nav.id = 'main-nav';\n\n  const ul = document.createElement('ul');\n  ul.classList.add('tabrow');\n\n  for (let i = 0; i < menuItems.length; i += 1) {\n    const li = document.createElement('li');\n    li.textContent = menuItems[i];\n\n    // Make first item \"active\"\n    if (i === 0) li.classList.add('selected');\n\n    ul.appendChild(li);\n\n    addTabListener(li);\n  }\n\n  nav.appendChild(ul);\n  container.appendChild(nav);\n}\n\nfunction ready() {\n  _commonTab__WEBPACK_IMPORTED_MODULE_3__[\"state\"].loadData();\n  createTabMenu();\n  Object(_tasksTab__WEBPACK_IMPORTED_MODULE_1__[\"default\"])();\n}\n\ndocument.addEventListener('DOMContentLoaded', ready);\n\n\n//# sourceURL=webpack:///./src/index.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tasksTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _projectsTab__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var _commonTab__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/**
+ * @format
+ */
+__webpack_require__(1);
+// normalize.css must be loaded first before app css, so disable eslint check
+/* eslint-disable import/first */
+
+
+
+
+/* eslint-enable import/first */
+
+// Event listener helpers
+function removeContainer(id) {
+  const elem = document.getElementById(id);
+  if (elem) elem.parentNode.removeChild(elem);
+}
+
+function selectTab(e) {
+  const activeClass = 'selected';
+
+  // Find menu associated with '#main-nav'
+  const mainNav = document.getElementById('main-nav');
+  const childrenArr = [...mainNav.children];
+
+  // Find currently selected item, deselect it, select clicked item
+  for (let i = 0; i < childrenArr.length; i += 1) {
+    // Should be menu we're looking for
+    if (childrenArr[i].tagName === 'UL') {
+      const ulChildrenArr = [...childrenArr[i].children];
+      for (let j = 0; j < ulChildrenArr.length; j += 1) {
+        // Once active tab is found make other tab active
+        if (ulChildrenArr[j].classList.contains(activeClass)) {
+          ulChildrenArr[j].classList.remove(activeClass);
+          e.target.classList.add(activeClass);
+          break;
+        }
+      }
+      break;
+    }
+  }
+}
+
+// Eventlisteners
+
+function makeTabActive(e) {
+  const activeClass = 'selected';
+
+  // Ignore click if on currently selected tab
+  if (!e.target.classList.contains(activeClass)) {
+    _commonTab__WEBPACK_IMPORTED_MODULE_3__["state"].currentProject = null;
+    selectTab(e);
+
+    switch (e.target.textContent) {
+      case 'Tasks':
+        removeContainer(_commonTab__WEBPACK_IMPORTED_MODULE_3__["elemId"].projectsContainerId);
+        Object(_tasksTab__WEBPACK_IMPORTED_MODULE_1__["default"])();
+        break;
+      case 'Projects':
+        removeContainer(_commonTab__WEBPACK_IMPORTED_MODULE_3__["elemId"].taskContainerId);
+        Object(_projectsTab__WEBPACK_IMPORTED_MODULE_2__["default"])();
+        break;
+    }
+  }
+}
+
+// Support functions
+
+function addTabListener(target) {
+  target.addEventListener('click', e => {
+    makeTabActive(e);
+  });
+}
+
+function createTabMenu() {
+  const menuItems = ['Tasks', 'Projects'];
+
+  const container = document.getElementById('container');
+
+  const nav = document.createElement('nav');
+  nav.id = 'main-nav';
+
+  const ul = document.createElement('ul');
+  ul.classList.add('tabrow');
+
+  for (let i = 0; i < menuItems.length; i += 1) {
+    const li = document.createElement('li');
+    li.textContent = menuItems[i];
+
+    // Make first item "active"
+    if (i === 0) li.classList.add('selected');
+
+    ul.appendChild(li);
+
+    addTabListener(li);
+  }
+
+  nav.appendChild(ul);
+  container.appendChild(nav);
+}
+
+function ready() {
+  _commonTab__WEBPACK_IMPORTED_MODULE_3__["state"].loadData();
+  createTabMenu();
+  Object(_tasksTab__WEBPACK_IMPORTED_MODULE_1__["default"])();
+}
+
+document.addEventListener('DOMContentLoaded', ready);
+
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports) {
 
-eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack:///./node_modules/normalize.css/normalize.css?");
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack:///./src/assets/css/style.scss?");
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _commonTab__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);\n/**\n * @format\n */\n\n\nfunction buildTaskPage() {\n  _commonTab__WEBPACK_IMPORTED_MODULE_0__[\"utility\"].addSection(\n    _commonTab__WEBPACK_IMPORTED_MODULE_0__[\"utility\"].getRootElement(),\n    _commonTab__WEBPACK_IMPORTED_MODULE_0__[\"elemId\"].taskContainerId,\n  );\n\n  const sectionElem = document.getElementById(\n    _commonTab__WEBPACK_IMPORTED_MODULE_0__[\"elemId\"].taskContainerId,\n  );\n\n  _commonTab__WEBPACK_IMPORTED_MODULE_0__[\"utility\"].addTaskTable(sectionElem);\n  _commonTab__WEBPACK_IMPORTED_MODULE_0__[\"utility\"].addActionSection(sectionElem);\n  _commonTab__WEBPACK_IMPORTED_MODULE_0__[\"utility\"].addPageButtons(\n    document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_0__[\"elemId\"].pageButtonsId),\n  );\n  _commonTab__WEBPACK_IMPORTED_MODULE_0__[\"utility\"].addFooter(sectionElem);\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (buildTaskPage);\n\n\n//# sourceURL=webpack:///./src/tasksTab.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _commonTab__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/**
+ * @format
+ */
+
+
+function buildTaskPage() {
+  _commonTab__WEBPACK_IMPORTED_MODULE_0__["utility"].addSection(
+    _commonTab__WEBPACK_IMPORTED_MODULE_0__["utility"].getRootElement(),
+    _commonTab__WEBPACK_IMPORTED_MODULE_0__["elemId"].taskContainerId,
+  );
+
+  const sectionElem = document.getElementById(
+    _commonTab__WEBPACK_IMPORTED_MODULE_0__["elemId"].taskContainerId,
+  );
+
+  _commonTab__WEBPACK_IMPORTED_MODULE_0__["utility"].addTaskTable(sectionElem);
+  _commonTab__WEBPACK_IMPORTED_MODULE_0__["utility"].addActionSection(sectionElem);
+  _commonTab__WEBPACK_IMPORTED_MODULE_0__["utility"].addPageButtons(
+    document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_0__["elemId"].pageButtonsId),
+  );
+  _commonTab__WEBPACK_IMPORTED_MODULE_0__["utility"].addFooter(sectionElem);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (buildTaskPage);
+
 
 /***/ }),
 /* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"state\", function() { return state; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"elemId\", function() { return elemId; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"forms\", function() { return forms; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"resources\", function() { return resources; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"utility\", function() { return utility; });\n/* harmony import */ var date_fns_is_past__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);\n/* harmony import */ var date_fns_is_past__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(date_fns_is_past__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var date_fns_parse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);\n/* harmony import */ var date_fns_parse__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(date_fns_parse__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);\n/**\n * @format\n */\n\n\n\n\nconst state = {\n  tasks: [],\n  projects: [],\n  currentProject: null,\n  loadData() {\n    if (localStorage) {\n      const tasks = localStorage.getItem('tasks');\n      const projects = localStorage.getItem('projects');\n      if (tasks)\n        state.tasks = JSON.parse(tasks).map(task => _todo__WEBPACK_IMPORTED_MODULE_2__[\"baseTodoItem\"](task));\n      if (projects) {\n        state.projects = JSON.parse(projects).map(project =>\n          _todo__WEBPACK_IMPORTED_MODULE_2__[\"baseTodoItem\"](project)\n        );\n      }\n    } else { alert('Cannot load any data'); }\n  },\n  saveData() {\n    if (localStorage) {\n      localStorage.clear();\n      const states = state.tasks.map(task => task.exportState());\n      localStorage.setItem('tasks', JSON.stringify(states));\n      const projects = state.projects.map(project => project.exportState());\n      localStorage.setItem('projects', JSON.stringify(projects));\n    } else {\n      alert('Unable to save your tasks and projects');\n    }\n  },\n};\n\nconst elemId = {\n  containerId: 'container',\n  footerId: 'footer',\n  pageActionsId: 'page-actions',\n  pageButtonsId: 'page-buttons',\n  pageFormId: 'page-form',\n  popupContainerId: 'popup-container',\n  popupDisplayId: 'popup-show',\n  popupFormId: 'popup-form',\n  projectsContainerId: 'projects-container',\n  projectsSectionId: 'projects',\n  projectStatusBarId: 'project-bar',\n  projectTableId: 'projects-table',\n  taskContainerId: 'tasks-container',\n  tasksSectionId: 'tasks',\n  taskTableId: 'tasks-table',\n};\n\nconst resources = {\n  doneImg: 'assets/graphics/complete25x25.png',\n  openImg: 'assets/graphics/open25x25.png',\n  overdueImg: 'assets/graphics/overdue25x25.jpg',\n};\n\nconst forms = {\n  taskForm: [\n    {\n      tag: 'label',\n      attrs: [{ name: 'for', value: 'name' }],\n      text: 'Name',\n      required: null,\n    },\n    {\n      tag: 'input',\n      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'name' }],\n      text: '',\n      required: true,\n    },\n    {\n      tag: 'label',\n      attrs: [{ name: 'for', value: 'desc' }],\n      text: 'Description',\n    },\n    {\n      tag: 'input',\n      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'desc' }],\n      text: '',\n      required: true,\n    },\n    { tag: 'label', attrs: [{ name: 'for', value: 'date' }], text: 'Due Date' },\n    {\n      tag: 'input',\n      attrs: [{ name: 'type', value: 'date' }, { name: 'name', value: 'due' }],\n      text: '',\n      required: true,\n    },\n    {\n      tag: 'label',\n      attrs: [{ name: 'for', value: 'project' }],\n      text: 'project',\n    },\n    {\n      tag: 'select',\n      attrs: [{ name: 'name', value: 'project' }],\n      text: '',\n      required: false,\n    },\n    {\n      tag: 'label',\n      attrs: [{ name: 'for', value: 'priority' }],\n      text: 'Priority',\n    },\n    {\n      tag: 'input',\n      attrs: [\n        { name: 'type', value: 'number' },\n        { name: 'name', value: 'priority' },\n        { name: 'min', value: '1' },\n        { name: 'max', value: '10' },\n      ],\n      text: '',\n      required: true,\n    },\n  ],\n\n  projectForm: [\n    {\n      tag: 'label',\n      attrs: [{ name: 'for', value: 'name' }],\n      text: 'Name',\n      required: null,\n    },\n    {\n      tag: 'input',\n      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'name' }],\n      text: '',\n      required: true,\n    },\n    {\n      tag: 'label',\n      attrs: [{ name: 'for', value: 'desc' }],\n      text: 'Description',\n    },\n    {\n      tag: 'input',\n      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'desc' }],\n      text: '',\n      required: true,\n    },\n    { tag: 'label', attrs: [{ name: 'for', value: 'date' }], text: 'Due Date' },\n    {\n      tag: 'input',\n      attrs: [{ name: 'type', value: 'date' }, { name: 'name', value: 'due' }],\n      text: '',\n      required: true,\n    },\n    {\n      tag: 'label',\n      attrs: [{ name: 'for', value: 'priority' }],\n      text: 'Priority',\n    },\n    {\n      tag: 'input',\n      attrs: [\n        { name: 'type', value: 'number' },\n        { name: 'name', value: 'priority' },\n        { name: 'min', value: '1' },\n        { name: 'max', value: '10' },\n      ],\n      text: '',\n      required: true,\n    },\n  ],\n};\n\nconst utility = {\n  // Create Functions -- return an element\n  createButton(text) {\n    const button = document.createElement('button');\n    button.textContent = text;\n    button.classList.add('btn');\n    return button;\n  },\n\n  createModalButton(type, id, classes, text, callback) {\n    const button = document.createElement('button');\n    button.setAttribute('type', type);\n    button.id = id;\n    for (let i = 0; i < classes.length; i += 1) {\n      button.classList.add(classes[i]);\n    }\n    button.textContent = text;\n    button.addEventListener('click', callback);\n    return button;\n  },\n\n  createDataCell(tag, text, hidden) {\n    const td = document.createElement(tag);\n    if (hidden) td.classList.add('hidden');\n    td.textContent = text;\n    return td;\n  },\n\n  createSection: function createSection(id) {\n    const section = document.createElement('section');\n    section.id = id;\n    return section;\n  },\n\n  createStatusCell(item) {\n    const td = document.createElement('td');\n    const img = document.createElement('img');\n    img.addEventListener('click', utility.toggleComplete);\n    td.appendChild(img);\n\n    switch (item.get('done')) {\n      case false:\n        if (date_fns_is_past__WEBPACK_IMPORTED_MODULE_0___default()(date_fns_parse__WEBPACK_IMPORTED_MODULE_1___default()(item.get('due')))) {\n          img.setAttribute('src', resources.overdueImg);\n        } else {\n          img.setAttribute('src', resources.openImg);\n        }\n        break;\n      case true:\n        img.setAttribute('src', resources.doneImg);\n        break;\n    }\n    return td;\n  },\n\n  createTable(id) {\n    const table = document.createElement('table');\n    table.id = id;\n    return table;\n  },\n\n  createTaskRow(task, index) {\n    const propOrder = ['name', 'desc', 'due', 'project', 'priority'];\n    const tr = document.createElement('tr');\n    // value of done is represented by an icon\n    tr.appendChild(utility.createStatusCell(task));\n\n    for (let i = 0; i < propOrder.length; i += 1) {\n      const prop = propOrder[i];\n      tr.appendChild(utility.createDataCell('td', task.get(prop)));\n      if (prop === 'name')\n        tr.childNodes[1].addEventListener('click', utility.addEditTaskForm);\n    }\n\n    const button = utility.createButton('Delete');\n    button.addEventListener('click', utility.deleteTask);\n    utility.addActionButton(tr, button);\n    // Put index of utility object in tasks array and hide it\n    tr.appendChild(utility.createDataCell('td', index, true));\n    return tr;\n  },\n\n  createTaskTable(projectName) {\n    const colHeaders = [\n      '',\n      'Name',\n      'Description',\n      'Due Date',\n      'Project',\n      'Priority',\n      'Action',\n    ];\n    const table = utility.createTable(elemId.taskTableId);\n    utility.addTableHeader(table, colHeaders);\n    table.append(document.createElement('tbody'));\n    utility.addProjectTasks(table, projectName);\n    return table;\n  },\n\n  // Add functions, add child element(s) to a parent element\n  addActionButton(tr, button) {\n    const td = document.createElement('td');\n    td.appendChild(button);\n    tr.appendChild(td);\n  },\n\n  addFooter(parentElem) {\n    const images = [resources.openImg, resources.doneImg, resources.overdueImg];\n    const legend = ['Undone', 'Done', 'Overdue'];\n    const footer = document.createElement('footer');\n    footer.id = elemId.footerId;\n\n    for (let i = 0; i < images.length; i += 1) {\n      const img = document.createElement('img');\n      img.src = images[i];\n      footer.appendChild(img);\n      const p = document.createElement('p');\n      p.textContent = legend[i];\n      footer.appendChild(p);\n    }\n    parentElem.appendChild(footer);\n  },\n\n  addModalForm(formItems, saveButton, data = null, hidden = null) {\n    // This div sets up form to be 'modal' by CSS\n    const displayContainer = document.createElement('div');\n    displayContainer.id = elemId.popupDisplayId;\n    displayContainer.classList.add('block');\n\n    const popupContainer = document.createElement('div');\n    popupContainer.id = elemId.popupContainerId;\n    displayContainer.appendChild(popupContainer);\n\n    const form = document.createElement('form');\n    form.id = elemId.popupFormId;\n    utility.buildForm(form, formItems, data, hidden);\n\n    form.appendChild(saveButton);\n    const cancelButton = utility.createButton('Cancel');\n    cancelButton.addEventListener('click', utility.closeModal);\n    form.appendChild(cancelButton);\n    popupContainer.appendChild(form);\n\n    utility.getRootElement().appendChild(displayContainer);\n  },\n\n  addActionSection(parentElem) {\n    const ids = [elemId.pageButtonsId];\n    const parentDiv = document.createElement('div');\n    parentDiv.id = elemId.pageActionsId;\n\n    for (let i = 0; i < ids.length; i += 1) {\n      const div = document.createElement('div');\n      div.id = ids[i];\n      parentDiv.appendChild(div);\n    }\n    parentElem.appendChild(parentDiv);\n  },\n\n  addPageButtons(parentElem) {\n    let button = utility.createButton('Add Task');\n    button.addEventListener('click', utility.addTaskForm);\n    parentElem.appendChild(button);\n\n    button = utility.createButton('Save');\n    button.addEventListener('click', utility.save);\n    parentElem.appendChild(button);\n  },\n\n  addProjectTasks(table, projectName) {\n    const tasks = state.tasks.filter(\n      item => projectName === null || item.get('project') === projectName\n    );\n    // Need to do this since on the projects tab the row index will not\n    // neccesarily equal the array index when the user displays project tasks\n    const indices = utility.buildIndices(projectName);\n    const tbody = table.querySelector('tbody');\n\n    for (let i = 0; i < tasks.length; i += 1) {\n      const task = tasks[i];\n      const tr = utility.createTaskRow(task, indices[i]);\n      tbody.appendChild(tr);\n    }\n  },\n\n  addSection(parentElem, id) {\n    parentElem.appendChild(utility.createSection(id));\n  },\n\n  addTableHeader(parentElem, colHeaders) {\n    const thead = document.createElement('thead');\n    const tr = document.createElement('tr');\n\n    for (let i = 0; i < colHeaders.length; i += 1) {\n      tr.appendChild(utility.createDataCell('th', colHeaders[i]));\n    }\n    thead.appendChild(tr);\n    parentElem.appendChild(thead);\n  },\n\n  addTaskTable(parentElem, projectName = null) {\n    const table = utility.createTaskTable(projectName);\n    parentElem.appendChild(table);\n  },\n\n  // Support functions\n  setAttributes(tag, attrs, elem, data) {\n    for (let i = 0; i < attrs.length; i += 1) {\n      const { name, value } = attrs[i];\n      elem.setAttribute(name, value);\n      if (tag === 'input' && name === 'name') {\n        if (data) elem.value = data.get(value);\n      } else if (tag === 'select' && name === 'name') {\n      }\n    }\n  },\n\n  addHiddenFields(form, hidden) {\n    for (let i = 0; i < hidden.length; i += 1) {\n      const hiddenInput = document.createElement('input');\n      hiddenInput.setAttribute('type', 'hidden');\n      hiddenInput.setAttribute('name', hidden[i].name);\n      hiddenInput.setAttribute('value', hidden[i].value);\n      form.appendChild(hiddenInput);\n    }\n  },\n\n  addProjectOptions(item = null) {\n    // Add a dropdown list of current projects, if any\n    const form = document.getElementById(elemId.popupFormId);\n    const selectElem = form.querySelector('select[name=\"project\"]');\n\n    const emptyOption = document.createElement('option');\n    emptyOption.setAttribute('value', '');\n    emptyOption.textContent = '';\n    selectElem.appendChild(emptyOption);\n\n    for (let i = 0; i < state.projects.length; i += 1) {\n      const option = state.projects[i].get('name');\n      const optionElem = document.createElement('option');\n      optionElem.setAttribute('value', option);\n      if (item && option === item.get('project')) {\n        optionElem.setAttribute('selected', 'selected');\n      } else if (\n        state.currentProject !== null &&\n        option === state.currentProject.get('name')\n      ) {\n        optionElem.setAttribute('selected', 'selected');\n      }\n      optionElem.textContent = option;\n      selectElem.appendChild(optionElem);\n    }\n  },\n\n  buildButton(form, type, id, classes, text, callback) {\n    const button = document.createElement('button');\n    button.setAttribute('type', type);\n    button.id = id;\n    for (let i = 0; i < classes.length; i += 1) {\n      button.classList.add(classes[i]);\n    }\n    button.textContent = text;\n    form.appendChild(button);\n    button.addEventListener('click', e => {\n      callback(e, form);\n    });\n  },\n\n  buildForm(form, items, data = null, hidden = null) {\n    // Take array defining an HTML form item and turn it into HTML Element\n    // with all its attributes\n    if (hidden) utility.addHiddenFields(form, hidden);\n    for (let i = 0; i < items.length; i += 1) {\n      const { tag, attrs } = items[i];\n      const elem = document.createElement(items[i].tag);\n      if (items[i].tag === 'input') elem.classList.add('form-input');\n      utility.setAttributes(tag, attrs, elem, data);\n      if (items[i].required) elem.setAttribute('required', 'required');\n      if (items[i].text !== '') elem.textContent = items[i].text;\n      form.appendChild(elem);\n      form.appendChild(document.createElement('br'));\n    }\n  },\n\n  buildIndices(projectName) {\n    const mapCallback = function(item, index) {\n      return projectName == null || item.get('project') === projectName\n        ? index\n        : null;\n    };\n    // Strip out nulls from above, leaving us with the indices we want\n    return state.tasks\n      .map((item, index) => mapCallback(item, index))\n      .filter(item => item !== null);\n  },\n\n  deleteFooter() {\n    const footer = document.getElementById(elemId.footerId);\n    footer.parentNode.removeChild(footer);\n  },\n\n  deleteForm(formId) {\n    const form = document.getElementById(formId);\n    const parent = form.parentNode;\n    parent.removeChild(form);\n  },\n\n  deleteModal() {\n    const modal = document.getElementById(elemId.popupDisplayId);\n    modal.parentNode.removeChild(modal);\n  },\n\n  getArrayIndex(row) {\n    const children = row.childNodes;\n    // Last element should be hidden TD containing array index\n    return parseInt(children[children.length - 1].textContent, 10);\n  },\n\n  getFormData(form) {\n    const itemIndex = this.getTextValue(form, 'itemindex');\n    const name = this.getTextValue(form, 'name');\n    const desc = this.getTextValue(form, 'desc');\n    const due = this.getTextValue(form, 'due');\n    const project = this.getTextValue(form, 'project');\n    const priority = this.getTextValue(form, 'priority');\n\n    return {\n      name,\n      desc,\n      due,\n      project,\n      priority,\n      done: false,\n      itemindex: itemIndex,\n    };\n  },\n\n  getRootElement() {\n    return document.getElementById(elemId.containerId);\n  },\n\n  getTextValue(form, field) {\n    const inputElem = form.querySelector(`input[name=${field}]`);\n    let value = null;\n    if (inputElem !== null) {\n      value = inputElem.value;\n    } else {\n      const selectElem = form.querySelector(`select[name=${field}]`);\n      if (selectElem !== null) {\n        value = selectElem.value;\n      }\n    }\n    return value;\n  },\n\n  // Event Listener helpers\n  delPageButtons() {\n    const elem = document.getElementById(elemId.pageButtonsId);\n\n    while (elem.firstChild) {\n      elem.removeChild(elem.firstChild);\n    }\n  },\n\n  renderTask(index) {\n    const taskIndex = index >= 0 ? index : state.tasks.length - 1;\n    const tr = utility.createTaskRow(state.tasks[taskIndex], taskIndex);\n    const table = document.getElementById(elemId.taskTableId);\n    const tbody = table.querySelector('tbody');\n\n    if (index >= 0) {\n      tbody.replaceChild(tr, tbody.childNodes[index]);\n    } else {\n      tbody.appendChild(tr);\n    }\n  },\n\n  updateHiddenIndices(sibling, inc = -1) {\n    let aSibling = sibling;\n    while (aSibling) {\n      const children = sibling.childNodes;\n      // Last child should be hidden node containing index into tasks\n      const indexTD = children[children.length - 1];\n      indexTD.textContent = parseInt(indexTD.textContent, 10) + inc;\n      aSibling = aSibling.nextSibling;\n    }\n  },\n\n  // Event Listeners\n  addTaskForm(e) {\n    const saveButton = utility.createModalButton(\n      'submit',\n      'add-task',\n      ['btn'],\n      'Add Task',\n      utility.handleAddTask\n    );\n    utility.addModalForm(forms.taskForm, saveButton);\n    utility.addProjectOptions();\n  },\n\n  closeModal(e) {\n    utility.deleteModal();\n  },\n\n  deleteTask(e) {\n    const table = document.getElementById(elemId.taskTableId);\n    const tbody = table.querySelector('tbody');\n    const row = e.target.parentNode.parentNode;\n    const sibling = e.target.parentNode.parentNode.nextSibling;\n    const taskIndex = utility.getArrayIndex(row);\n    state.tasks.splice(taskIndex, 1);\n    tbody.removeChild(row);\n    // Now that the task is deleted from the array, the hidden indices will\n    // be off, so they need to be updated\n    utility.updateHiddenIndices(sibling);\n  },\n\n  addEditTaskForm(e) {\n    const taskIndex = utility.getArrayIndex(e.target.parentNode);\n    const hidden = [{ name: 'itemindex', value: taskIndex }];\n    const updateButton = utility.createModalButton(\n      'submit',\n      'update-task',\n      ['btn'],\n      'Update Task',\n      utility.handleUpdateTask\n    );\n    utility.addModalForm(\n      forms.taskForm,\n      updateButton,\n      state.tasks[taskIndex],\n      hidden\n    );\n    utility.addProjectOptions(state.tasks[taskIndex]);\n  },\n\n  handleAddTask(e) {\n    e.preventDefault();\n    const form = e.target.parentNode;\n    const formData = utility.getFormData(form);\n    delete formData.itemindex;\n    state.tasks.push(_todo__WEBPACK_IMPORTED_MODULE_2__[\"baseTodoItem\"](formData));\n    utility.deleteModal();\n    utility.renderTask(-1);\n  },\n\n  handleUpdateTask(e) {\n    e.preventDefault();\n    const form = e.target.parentNode;\n    const formData = utility.getFormData(form);\n    const taskIndex = parseInt(formData.itemindex, 10);\n    delete formData.itemindex;\n    state.tasks[parseInt(taskIndex, 10)] = _todo__WEBPACK_IMPORTED_MODULE_2__[\"baseTodoItem\"](formData);\n    utility.deleteModal();\n    utility.renderTask(taskIndex);\n  },\n\n  save(e) {\n    state.saveData();\n  },\n\n  toggleComplete(e) {\n    const img = e.target;\n    // tr->tbody->table\n    const tableId = e.target.parentNode.parentNode.parentNode.parentNode.id;\n    const cells = e.target.parentNode.parentNode.childNodes;\n    const index = parseInt(cells[cells.length - 1].textContent, 10);\n\n    const itemArray =\n      tableId === elemId.taskTableId ? state.tasks : state.projects;\n\n    if (itemArray[index].get('done')) {\n      if (date_fns_is_past__WEBPACK_IMPORTED_MODULE_0___default()(date_fns_parse__WEBPACK_IMPORTED_MODULE_1___default()(itemArray[index].get('due')))) {\n        img.src = resources.overdueImg;\n      } else {\n        img.src = resources.openImg;\n      }\n    } else {\n      img.src = resources.doneImg;\n    }\n    itemArray[index].toggleDone();\n    img.addEventListener('click', utility.toggleComplete);\n  },\n};\n\n\n\n\n//# sourceURL=webpack:///./src/commonTab.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "state", function() { return state; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "elemId", function() { return elemId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "forms", function() { return forms; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resources", function() { return resources; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "utility", function() { return utility; });
+/* harmony import */ var date_fns_is_past__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var date_fns_is_past__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(date_fns_is_past__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var date_fns_parse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var date_fns_parse__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(date_fns_parse__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
+/**
+ * @format
+ */
+
+
+
+
+const state = {
+  tasks: [],
+  projects: [],
+  currentProject: null,
+  loadData() {
+    if (localStorage) {
+      const tasks = localStorage.getItem('tasks');
+      const projects = localStorage.getItem('projects');
+      if (tasks)
+        state.tasks = JSON.parse(tasks).map(task => _todo__WEBPACK_IMPORTED_MODULE_2__["baseTodoItem"](task));
+      if (projects) {
+        state.projects = JSON.parse(projects).map(project =>
+          _todo__WEBPACK_IMPORTED_MODULE_2__["baseTodoItem"](project)
+        );
+      }
+    } else { alert('Cannot load any data'); }
+  },
+  saveData() {
+    if (localStorage) {
+      localStorage.clear();
+      const states = state.tasks.map(task => task.exportState());
+      localStorage.setItem('tasks', JSON.stringify(states));
+      const projects = state.projects.map(project => project.exportState());
+      localStorage.setItem('projects', JSON.stringify(projects));
+    } else {
+      alert('Unable to save your tasks and projects');
+    }
+  },
+};
+
+const elemId = {
+  containerId: 'container',
+  footerId: 'footer',
+  pageActionsId: 'page-actions',
+  pageButtonsId: 'page-buttons',
+  pageFormId: 'page-form',
+  popupContainerId: 'popup-container',
+  popupDisplayId: 'popup-show',
+  popupFormId: 'popup-form',
+  projectsContainerId: 'projects-container',
+  projectsSectionId: 'projects',
+  projectStatusBarId: 'project-bar',
+  projectTableId: 'projects-table',
+  taskContainerId: 'tasks-container',
+  tasksSectionId: 'tasks',
+  taskTableId: 'tasks-table',
+};
+
+const resources = {
+  doneImg: 'assets/graphics/complete25x25.png',
+  openImg: 'assets/graphics/open25x25.png',
+  overdueImg: 'assets/graphics/overdue25x25.jpg',
+};
+
+const forms = {
+  taskForm: [
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'name' }],
+      text: 'Name',
+      required: null,
+    },
+    {
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'name' }],
+      text: '',
+      required: true,
+    },
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'desc' }],
+      text: 'Description',
+    },
+    {
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'desc' }],
+      text: '',
+      required: true,
+    },
+    { tag: 'label', attrs: [{ name: 'for', value: 'date' }], text: 'Due Date' },
+    {
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'date' }, { name: 'name', value: 'due' }],
+      text: '',
+      required: true,
+    },
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'project' }],
+      text: 'project',
+    },
+    {
+      tag: 'select',
+      attrs: [{ name: 'name', value: 'project' }],
+      text: '',
+      required: false,
+    },
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'priority' }],
+      text: 'Priority',
+    },
+    {
+      tag: 'input',
+      attrs: [
+        { name: 'type', value: 'number' },
+        { name: 'name', value: 'priority' },
+        { name: 'min', value: '1' },
+        { name: 'max', value: '10' },
+      ],
+      text: '',
+      required: true,
+    },
+  ],
+
+  projectForm: [
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'name' }],
+      text: 'Name',
+      required: null,
+    },
+    {
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'name' }],
+      text: '',
+      required: true,
+    },
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'desc' }],
+      text: 'Description',
+    },
+    {
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'text' }, { name: 'name', value: 'desc' }],
+      text: '',
+      required: true,
+    },
+    { tag: 'label', attrs: [{ name: 'for', value: 'date' }], text: 'Due Date' },
+    {
+      tag: 'input',
+      attrs: [{ name: 'type', value: 'date' }, { name: 'name', value: 'due' }],
+      text: '',
+      required: true,
+    },
+    {
+      tag: 'label',
+      attrs: [{ name: 'for', value: 'priority' }],
+      text: 'Priority',
+    },
+    {
+      tag: 'input',
+      attrs: [
+        { name: 'type', value: 'number' },
+        { name: 'name', value: 'priority' },
+        { name: 'min', value: '1' },
+        { name: 'max', value: '10' },
+      ],
+      text: '',
+      required: true,
+    },
+  ],
+};
+
+const utility = {
+  // Create Functions -- return an element
+  createButton(text) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.classList.add('btn');
+    return button;
+  },
+
+  createModalButton(type, id, classes, text, callback) {
+    const button = document.createElement('button');
+    button.setAttribute('type', type);
+    button.id = id;
+    for (let i = 0; i < classes.length; i += 1) {
+      button.classList.add(classes[i]);
+    }
+    button.textContent = text;
+    button.addEventListener('click', callback);
+    return button;
+  },
+
+  createDataCell(tag, text, hidden) {
+    const td = document.createElement(tag);
+    if (hidden) td.classList.add('hidden');
+    td.textContent = text;
+    return td;
+  },
+
+  createSection: function createSection(id) {
+    const section = document.createElement('section');
+    section.id = id;
+    return section;
+  },
+
+  createStatusCell(item) {
+    const td = document.createElement('td');
+    const img = document.createElement('img');
+    img.addEventListener('click', utility.toggleComplete);
+    td.appendChild(img);
+
+    switch (item.get('done')) {
+      case false:
+        if (date_fns_is_past__WEBPACK_IMPORTED_MODULE_0___default()(date_fns_parse__WEBPACK_IMPORTED_MODULE_1___default()(item.get('due')))) {
+          img.setAttribute('src', resources.overdueImg);
+        } else {
+          img.setAttribute('src', resources.openImg);
+        }
+        break;
+      case true:
+        img.setAttribute('src', resources.doneImg);
+        break;
+    }
+    return td;
+  },
+
+  createTable(id) {
+    const table = document.createElement('table');
+    table.id = id;
+    return table;
+  },
+
+  createTaskRow(task, index) {
+    const propOrder = ['name', 'desc', 'due', 'project', 'priority'];
+    const tr = document.createElement('tr');
+    // value of done is represented by an icon
+    tr.appendChild(utility.createStatusCell(task));
+
+    for (let i = 0; i < propOrder.length; i += 1) {
+      const prop = propOrder[i];
+      tr.appendChild(utility.createDataCell('td', task.get(prop)));
+      if (prop === 'name')
+        tr.childNodes[1].addEventListener('click', utility.addEditTaskForm);
+    }
+
+    const button = utility.createButton('Delete');
+    button.addEventListener('click', utility.deleteTask);
+    utility.addActionButton(tr, button);
+    // Put index of utility object in tasks array and hide it
+    tr.appendChild(utility.createDataCell('td', index, true));
+    return tr;
+  },
+
+  createTaskTable(projectName) {
+    const colHeaders = [
+      '',
+      'Name',
+      'Description',
+      'Due Date',
+      'Project',
+      'Priority',
+      'Action',
+    ];
+    const table = utility.createTable(elemId.taskTableId);
+    utility.addTableHeader(table, colHeaders);
+    table.append(document.createElement('tbody'));
+    utility.addProjectTasks(table, projectName);
+    return table;
+  },
+
+  // Add functions, add child element(s) to a parent element
+  addActionButton(tr, button) {
+    const td = document.createElement('td');
+    td.appendChild(button);
+    tr.appendChild(td);
+  },
+
+  addFooter(parentElem) {
+    const images = [resources.openImg, resources.doneImg, resources.overdueImg];
+    const legend = ['Undone', 'Done', 'Overdue'];
+    const footer = document.createElement('footer');
+    footer.id = elemId.footerId;
+
+    for (let i = 0; i < images.length; i += 1) {
+      const img = document.createElement('img');
+      img.src = images[i];
+      footer.appendChild(img);
+      const p = document.createElement('p');
+      p.textContent = legend[i];
+      footer.appendChild(p);
+    }
+    parentElem.appendChild(footer);
+  },
+
+  addModalForm(formItems, saveButton, data = null, hidden = null) {
+    // This div sets up form to be 'modal' by CSS
+    const displayContainer = document.createElement('div');
+    displayContainer.id = elemId.popupDisplayId;
+    displayContainer.classList.add('block');
+
+    const popupContainer = document.createElement('div');
+    popupContainer.id = elemId.popupContainerId;
+    displayContainer.appendChild(popupContainer);
+
+    const form = document.createElement('form');
+    form.id = elemId.popupFormId;
+    utility.buildForm(form, formItems, data, hidden);
+
+    form.appendChild(saveButton);
+    const cancelButton = utility.createButton('Cancel');
+    cancelButton.addEventListener('click', utility.closeModal);
+    form.appendChild(cancelButton);
+    popupContainer.appendChild(form);
+
+    utility.getRootElement().appendChild(displayContainer);
+  },
+
+  addActionSection(parentElem) {
+    const ids = [elemId.pageButtonsId];
+    const parentDiv = document.createElement('div');
+    parentDiv.id = elemId.pageActionsId;
+
+    for (let i = 0; i < ids.length; i += 1) {
+      const div = document.createElement('div');
+      div.id = ids[i];
+      parentDiv.appendChild(div);
+    }
+    parentElem.appendChild(parentDiv);
+  },
+
+  addPageButtons(parentElem) {
+    let button = utility.createButton('Add Task');
+    button.addEventListener('click', utility.addTaskForm);
+    parentElem.appendChild(button);
+
+    button = utility.createButton('Save');
+    button.addEventListener('click', utility.save);
+    parentElem.appendChild(button);
+  },
+
+  addProjectTasks(table, projectName) {
+    const tasks = state.tasks.filter(
+      item => projectName === null || item.get('project') === projectName
+    );
+    // Need to do this since on the projects tab the row index will not
+    // neccesarily equal the array index when the user displays project tasks
+    const indices = utility.buildIndices(projectName);
+    const tbody = table.querySelector('tbody');
+
+    for (let i = 0; i < tasks.length; i += 1) {
+      const task = tasks[i];
+      const tr = utility.createTaskRow(task, indices[i]);
+      tbody.appendChild(tr);
+    }
+  },
+
+  addSection(parentElem, id) {
+    parentElem.appendChild(utility.createSection(id));
+  },
+
+  addTableHeader(parentElem, colHeaders) {
+    const thead = document.createElement('thead');
+    const tr = document.createElement('tr');
+
+    for (let i = 0; i < colHeaders.length; i += 1) {
+      tr.appendChild(utility.createDataCell('th', colHeaders[i]));
+    }
+    thead.appendChild(tr);
+    parentElem.appendChild(thead);
+  },
+
+  addTaskTable(parentElem, projectName = null) {
+    const table = utility.createTaskTable(projectName);
+    parentElem.appendChild(table);
+  },
+
+  // Support functions
+  setAttributes(tag, attrs, elem, data) {
+    for (let i = 0; i < attrs.length; i += 1) {
+      const { name, value } = attrs[i];
+      elem.setAttribute(name, value);
+      if (tag === 'input' && name === 'name') {
+        if (data) elem.value = data.get(value);
+      } else if (tag === 'select' && name === 'name') {
+      }
+    }
+  },
+
+  addHiddenFields(form, hidden) {
+    for (let i = 0; i < hidden.length; i += 1) {
+      const hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', hidden[i].name);
+      hiddenInput.setAttribute('value', hidden[i].value);
+      form.appendChild(hiddenInput);
+    }
+  },
+
+  addProjectOptions(item = null) {
+    // Add a dropdown list of current projects, if any
+    const form = document.getElementById(elemId.popupFormId);
+    const selectElem = form.querySelector('select[name="project"]');
+
+    const emptyOption = document.createElement('option');
+    emptyOption.setAttribute('value', '');
+    emptyOption.textContent = '';
+    selectElem.appendChild(emptyOption);
+
+    for (let i = 0; i < state.projects.length; i += 1) {
+      const option = state.projects[i].get('name');
+      const optionElem = document.createElement('option');
+      optionElem.setAttribute('value', option);
+      if (item && option === item.get('project')) {
+        optionElem.setAttribute('selected', 'selected');
+      } else if (
+        state.currentProject !== null &&
+        option === state.currentProject.get('name')
+      ) {
+        optionElem.setAttribute('selected', 'selected');
+      }
+      optionElem.textContent = option;
+      selectElem.appendChild(optionElem);
+    }
+  },
+
+  buildButton(form, type, id, classes, text, callback) {
+    const button = document.createElement('button');
+    button.setAttribute('type', type);
+    button.id = id;
+    for (let i = 0; i < classes.length; i += 1) {
+      button.classList.add(classes[i]);
+    }
+    button.textContent = text;
+    form.appendChild(button);
+    button.addEventListener('click', e => {
+      callback(e, form);
+    });
+  },
+
+  buildForm(form, items, data = null, hidden = null) {
+    // Take array defining an HTML form item and turn it into HTML Element
+    // with all its attributes
+    if (hidden) utility.addHiddenFields(form, hidden);
+    for (let i = 0; i < items.length; i += 1) {
+      const { tag, attrs } = items[i];
+      const elem = document.createElement(items[i].tag);
+      if (items[i].tag === 'input') elem.classList.add('form-input');
+      utility.setAttributes(tag, attrs, elem, data);
+      if (items[i].required) elem.setAttribute('required', 'required');
+      if (items[i].text !== '') elem.textContent = items[i].text;
+      form.appendChild(elem);
+      form.appendChild(document.createElement('br'));
+    }
+  },
+
+  buildIndices(projectName) {
+    const mapCallback = function(item, index) {
+      return projectName == null || item.get('project') === projectName
+        ? index
+        : null;
+    };
+    // Strip out nulls from above, leaving us with the indices we want
+    return state.tasks
+      .map((item, index) => mapCallback(item, index))
+      .filter(item => item !== null);
+  },
+
+  deleteFooter() {
+    const footer = document.getElementById(elemId.footerId);
+    footer.parentNode.removeChild(footer);
+  },
+
+  deleteForm(formId) {
+    const form = document.getElementById(formId);
+    const parent = form.parentNode;
+    parent.removeChild(form);
+  },
+
+  deleteModal() {
+    const modal = document.getElementById(elemId.popupDisplayId);
+    modal.parentNode.removeChild(modal);
+  },
+
+  getArrayIndex(row) {
+    const children = row.childNodes;
+    // Last element should be hidden TD containing array index
+    return parseInt(children[children.length - 1].textContent, 10);
+  },
+
+  getFormData(form) {
+    const itemIndex = this.getTextValue(form, 'itemindex');
+    const name = this.getTextValue(form, 'name');
+    const desc = this.getTextValue(form, 'desc');
+    const due = this.getTextValue(form, 'due');
+    const project = this.getTextValue(form, 'project');
+    const priority = this.getTextValue(form, 'priority');
+
+    return {
+      name,
+      desc,
+      due,
+      project,
+      priority,
+      done: false,
+      itemindex: itemIndex,
+    };
+  },
+
+  getRootElement() {
+    return document.getElementById(elemId.containerId);
+  },
+
+  getTextValue(form, field) {
+    const inputElem = form.querySelector(`input[name=${field}]`);
+    let value = null;
+    if (inputElem !== null) {
+      value = inputElem.value;
+    } else {
+      const selectElem = form.querySelector(`select[name=${field}]`);
+      if (selectElem !== null) {
+        value = selectElem.value;
+      }
+    }
+    return value;
+  },
+
+  // Event Listener helpers
+  delPageButtons() {
+    const elem = document.getElementById(elemId.pageButtonsId);
+
+    while (elem.firstChild) {
+      elem.removeChild(elem.firstChild);
+    }
+  },
+
+  renderTask(index) {
+    const taskIndex = index >= 0 ? index : state.tasks.length - 1;
+    const tr = utility.createTaskRow(state.tasks[taskIndex], taskIndex);
+    const table = document.getElementById(elemId.taskTableId);
+    const tbody = table.querySelector('tbody');
+
+    if (index >= 0) {
+      tbody.replaceChild(tr, tbody.childNodes[index]);
+    } else {
+      tbody.appendChild(tr);
+    }
+  },
+
+  updateHiddenIndices(sibling, inc = -1) {
+    let aSibling = sibling;
+    while (aSibling) {
+      const children = sibling.childNodes;
+      // Last child should be hidden node containing index into tasks
+      const indexTD = children[children.length - 1];
+      indexTD.textContent = parseInt(indexTD.textContent, 10) + inc;
+      aSibling = aSibling.nextSibling;
+    }
+  },
+
+  // Event Listeners
+  addTaskForm(e) {
+    const saveButton = utility.createModalButton(
+      'submit',
+      'add-task',
+      ['btn'],
+      'Add Task',
+      utility.handleAddTask
+    );
+    utility.addModalForm(forms.taskForm, saveButton);
+    utility.addProjectOptions();
+  },
+
+  closeModal(e) {
+    utility.deleteModal();
+  },
+
+  deleteTask(e) {
+    const table = document.getElementById(elemId.taskTableId);
+    const tbody = table.querySelector('tbody');
+    const row = e.target.parentNode.parentNode;
+    const sibling = e.target.parentNode.parentNode.nextSibling;
+    const taskIndex = utility.getArrayIndex(row);
+    state.tasks.splice(taskIndex, 1);
+    tbody.removeChild(row);
+    // Now that the task is deleted from the array, the hidden indices will
+    // be off, so they need to be updated
+    utility.updateHiddenIndices(sibling);
+  },
+
+  addEditTaskForm(e) {
+    const taskIndex = utility.getArrayIndex(e.target.parentNode);
+    const hidden = [{ name: 'itemindex', value: taskIndex }];
+    const updateButton = utility.createModalButton(
+      'submit',
+      'update-task',
+      ['btn'],
+      'Update Task',
+      utility.handleUpdateTask
+    );
+    utility.addModalForm(
+      forms.taskForm,
+      updateButton,
+      state.tasks[taskIndex],
+      hidden
+    );
+    utility.addProjectOptions(state.tasks[taskIndex]);
+  },
+
+  handleAddTask(e) {
+    e.preventDefault();
+    const form = e.target.parentNode;
+    const formData = utility.getFormData(form);
+    delete formData.itemindex;
+    state.tasks.push(_todo__WEBPACK_IMPORTED_MODULE_2__["baseTodoItem"](formData));
+    utility.deleteModal();
+    utility.renderTask(-1);
+  },
+
+  handleUpdateTask(e) {
+    e.preventDefault();
+    const form = e.target.parentNode;
+    const formData = utility.getFormData(form);
+    const taskIndex = parseInt(formData.itemindex, 10);
+    delete formData.itemindex;
+    state.tasks[parseInt(taskIndex, 10)] = _todo__WEBPACK_IMPORTED_MODULE_2__["baseTodoItem"](formData);
+    utility.deleteModal();
+    utility.renderTask(taskIndex);
+  },
+
+  save(e) {
+    state.saveData();
+  },
+
+  toggleComplete(e) {
+    const img = e.target;
+    // tr->tbody->table
+    const tableId = e.target.parentNode.parentNode.parentNode.parentNode.id;
+    const cells = e.target.parentNode.parentNode.childNodes;
+    const index = parseInt(cells[cells.length - 1].textContent, 10);
+
+    const itemArray =
+      tableId === elemId.taskTableId ? state.tasks : state.projects;
+
+    if (itemArray[index].get('done')) {
+      if (date_fns_is_past__WEBPACK_IMPORTED_MODULE_0___default()(date_fns_parse__WEBPACK_IMPORTED_MODULE_1___default()(itemArray[index].get('due')))) {
+        img.src = resources.overdueImg;
+      } else {
+        img.src = resources.openImg;
+      }
+    } else {
+      img.src = resources.doneImg;
+    }
+    itemArray[index].toggleDone();
+    img.addEventListener('click', utility.toggleComplete);
+  },
+};
+
+
+
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var parse = __webpack_require__(6)\n\n/**\n * @category Common Helpers\n * @summary Is the given date in the past?\n *\n * @description\n * Is the given date in the past?\n *\n * @param {Date|String|Number} date - the date to check\n * @returns {Boolean} the date is in the past\n *\n * @example\n * // If today is 6 October 2014, is 2 July 2014 in the past?\n * var result = isPast(new Date(2014, 6, 2))\n * //=> true\n */\nfunction isPast (dirtyDate) {\n  return parse(dirtyDate).getTime() < new Date().getTime()\n}\n\nmodule.exports = isPast\n\n\n//# sourceURL=webpack:///./node_modules/date-fns/is_past/index.js?");
+var parse = __webpack_require__(6)
+
+/**
+ * @category Common Helpers
+ * @summary Is the given date in the past?
+ *
+ * @description
+ * Is the given date in the past?
+ *
+ * @param {Date|String|Number} date - the date to check
+ * @returns {Boolean} the date is in the past
+ *
+ * @example
+ * // If today is 6 October 2014, is 2 July 2014 in the past?
+ * var result = isPast(new Date(2014, 6, 2))
+ * //=> true
+ */
+function isPast (dirtyDate) {
+  return parse(dirtyDate).getTime() < new Date().getTime()
+}
+
+module.exports = isPast
+
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("var isDate = __webpack_require__(7)\n\nvar MILLISECONDS_IN_HOUR = 3600000\nvar MILLISECONDS_IN_MINUTE = 60000\nvar DEFAULT_ADDITIONAL_DIGITS = 2\n\nvar parseTokenDateTimeDelimeter = /[T ]/\nvar parseTokenPlainTime = /:/\n\n// year tokens\nvar parseTokenYY = /^(\\d{2})$/\nvar parseTokensYYY = [\n  /^([+-]\\d{2})$/, // 0 additional digits\n  /^([+-]\\d{3})$/, // 1 additional digit\n  /^([+-]\\d{4})$/ // 2 additional digits\n]\n\nvar parseTokenYYYY = /^(\\d{4})/\nvar parseTokensYYYYY = [\n  /^([+-]\\d{4})/, // 0 additional digits\n  /^([+-]\\d{5})/, // 1 additional digit\n  /^([+-]\\d{6})/ // 2 additional digits\n]\n\n// date tokens\nvar parseTokenMM = /^-(\\d{2})$/\nvar parseTokenDDD = /^-?(\\d{3})$/\nvar parseTokenMMDD = /^-?(\\d{2})-?(\\d{2})$/\nvar parseTokenWww = /^-?W(\\d{2})$/\nvar parseTokenWwwD = /^-?W(\\d{2})-?(\\d{1})$/\n\n// time tokens\nvar parseTokenHH = /^(\\d{2}([.,]\\d*)?)$/\nvar parseTokenHHMM = /^(\\d{2}):?(\\d{2}([.,]\\d*)?)$/\nvar parseTokenHHMMSS = /^(\\d{2}):?(\\d{2}):?(\\d{2}([.,]\\d*)?)$/\n\n// timezone tokens\nvar parseTokenTimezone = /([Z+-].*)$/\nvar parseTokenTimezoneZ = /^(Z)$/\nvar parseTokenTimezoneHH = /^([+-])(\\d{2})$/\nvar parseTokenTimezoneHHMM = /^([+-])(\\d{2}):?(\\d{2})$/\n\n/**\n * @category Common Helpers\n * @summary Convert the given argument to an instance of Date.\n *\n * @description\n * Convert the given argument to an instance of Date.\n *\n * If the argument is an instance of Date, the function returns its clone.\n *\n * If the argument is a number, it is treated as a timestamp.\n *\n * If an argument is a string, the function tries to parse it.\n * Function accepts complete ISO 8601 formats as well as partial implementations.\n * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601\n *\n * If all above fails, the function passes the given argument to Date constructor.\n *\n * @param {Date|String|Number} argument - the value to convert\n * @param {Object} [options] - the object with options\n * @param {0 | 1 | 2} [options.additionalDigits=2] - the additional number of digits in the extended year format\n * @returns {Date} the parsed date in the local time zone\n *\n * @example\n * // Convert string '2014-02-11T11:30:30' to date:\n * var result = parse('2014-02-11T11:30:30')\n * //=> Tue Feb 11 2014 11:30:30\n *\n * @example\n * // Parse string '+02014101',\n * // if the additional number of digits in the extended year format is 1:\n * var result = parse('+02014101', {additionalDigits: 1})\n * //=> Fri Apr 11 2014 00:00:00\n */\nfunction parse (argument, dirtyOptions) {\n  if (isDate(argument)) {\n    // Prevent the date to lose the milliseconds when passed to new Date() in IE10\n    return new Date(argument.getTime())\n  } else if (typeof argument !== 'string') {\n    return new Date(argument)\n  }\n\n  var options = dirtyOptions || {}\n  var additionalDigits = options.additionalDigits\n  if (additionalDigits == null) {\n    additionalDigits = DEFAULT_ADDITIONAL_DIGITS\n  } else {\n    additionalDigits = Number(additionalDigits)\n  }\n\n  var dateStrings = splitDateString(argument)\n\n  var parseYearResult = parseYear(dateStrings.date, additionalDigits)\n  var year = parseYearResult.year\n  var restDateString = parseYearResult.restDateString\n\n  var date = parseDate(restDateString, year)\n\n  if (date) {\n    var timestamp = date.getTime()\n    var time = 0\n    var offset\n\n    if (dateStrings.time) {\n      time = parseTime(dateStrings.time)\n    }\n\n    if (dateStrings.timezone) {\n      offset = parseTimezone(dateStrings.timezone)\n    } else {\n      // get offset accurate to hour in timezones that change offset\n      offset = new Date(timestamp + time).getTimezoneOffset()\n      offset = new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE).getTimezoneOffset()\n    }\n\n    return new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE)\n  } else {\n    return new Date(argument)\n  }\n}\n\nfunction splitDateString (dateString) {\n  var dateStrings = {}\n  var array = dateString.split(parseTokenDateTimeDelimeter)\n  var timeString\n\n  if (parseTokenPlainTime.test(array[0])) {\n    dateStrings.date = null\n    timeString = array[0]\n  } else {\n    dateStrings.date = array[0]\n    timeString = array[1]\n  }\n\n  if (timeString) {\n    var token = parseTokenTimezone.exec(timeString)\n    if (token) {\n      dateStrings.time = timeString.replace(token[1], '')\n      dateStrings.timezone = token[1]\n    } else {\n      dateStrings.time = timeString\n    }\n  }\n\n  return dateStrings\n}\n\nfunction parseYear (dateString, additionalDigits) {\n  var parseTokenYYY = parseTokensYYY[additionalDigits]\n  var parseTokenYYYYY = parseTokensYYYYY[additionalDigits]\n\n  var token\n\n  // YYYY or ±YYYYY\n  token = parseTokenYYYY.exec(dateString) || parseTokenYYYYY.exec(dateString)\n  if (token) {\n    var yearString = token[1]\n    return {\n      year: parseInt(yearString, 10),\n      restDateString: dateString.slice(yearString.length)\n    }\n  }\n\n  // YY or ±YYY\n  token = parseTokenYY.exec(dateString) || parseTokenYYY.exec(dateString)\n  if (token) {\n    var centuryString = token[1]\n    return {\n      year: parseInt(centuryString, 10) * 100,\n      restDateString: dateString.slice(centuryString.length)\n    }\n  }\n\n  // Invalid ISO-formatted year\n  return {\n    year: null\n  }\n}\n\nfunction parseDate (dateString, year) {\n  // Invalid ISO-formatted year\n  if (year === null) {\n    return null\n  }\n\n  var token\n  var date\n  var month\n  var week\n\n  // YYYY\n  if (dateString.length === 0) {\n    date = new Date(0)\n    date.setUTCFullYear(year)\n    return date\n  }\n\n  // YYYY-MM\n  token = parseTokenMM.exec(dateString)\n  if (token) {\n    date = new Date(0)\n    month = parseInt(token[1], 10) - 1\n    date.setUTCFullYear(year, month)\n    return date\n  }\n\n  // YYYY-DDD or YYYYDDD\n  token = parseTokenDDD.exec(dateString)\n  if (token) {\n    date = new Date(0)\n    var dayOfYear = parseInt(token[1], 10)\n    date.setUTCFullYear(year, 0, dayOfYear)\n    return date\n  }\n\n  // YYYY-MM-DD or YYYYMMDD\n  token = parseTokenMMDD.exec(dateString)\n  if (token) {\n    date = new Date(0)\n    month = parseInt(token[1], 10) - 1\n    var day = parseInt(token[2], 10)\n    date.setUTCFullYear(year, month, day)\n    return date\n  }\n\n  // YYYY-Www or YYYYWww\n  token = parseTokenWww.exec(dateString)\n  if (token) {\n    week = parseInt(token[1], 10) - 1\n    return dayOfISOYear(year, week)\n  }\n\n  // YYYY-Www-D or YYYYWwwD\n  token = parseTokenWwwD.exec(dateString)\n  if (token) {\n    week = parseInt(token[1], 10) - 1\n    var dayOfWeek = parseInt(token[2], 10) - 1\n    return dayOfISOYear(year, week, dayOfWeek)\n  }\n\n  // Invalid ISO-formatted date\n  return null\n}\n\nfunction parseTime (timeString) {\n  var token\n  var hours\n  var minutes\n\n  // hh\n  token = parseTokenHH.exec(timeString)\n  if (token) {\n    hours = parseFloat(token[1].replace(',', '.'))\n    return (hours % 24) * MILLISECONDS_IN_HOUR\n  }\n\n  // hh:mm or hhmm\n  token = parseTokenHHMM.exec(timeString)\n  if (token) {\n    hours = parseInt(token[1], 10)\n    minutes = parseFloat(token[2].replace(',', '.'))\n    return (hours % 24) * MILLISECONDS_IN_HOUR +\n      minutes * MILLISECONDS_IN_MINUTE\n  }\n\n  // hh:mm:ss or hhmmss\n  token = parseTokenHHMMSS.exec(timeString)\n  if (token) {\n    hours = parseInt(token[1], 10)\n    minutes = parseInt(token[2], 10)\n    var seconds = parseFloat(token[3].replace(',', '.'))\n    return (hours % 24) * MILLISECONDS_IN_HOUR +\n      minutes * MILLISECONDS_IN_MINUTE +\n      seconds * 1000\n  }\n\n  // Invalid ISO-formatted time\n  return null\n}\n\nfunction parseTimezone (timezoneString) {\n  var token\n  var absoluteOffset\n\n  // Z\n  token = parseTokenTimezoneZ.exec(timezoneString)\n  if (token) {\n    return 0\n  }\n\n  // ±hh\n  token = parseTokenTimezoneHH.exec(timezoneString)\n  if (token) {\n    absoluteOffset = parseInt(token[2], 10) * 60\n    return (token[1] === '+') ? -absoluteOffset : absoluteOffset\n  }\n\n  // ±hh:mm or ±hhmm\n  token = parseTokenTimezoneHHMM.exec(timezoneString)\n  if (token) {\n    absoluteOffset = parseInt(token[2], 10) * 60 + parseInt(token[3], 10)\n    return (token[1] === '+') ? -absoluteOffset : absoluteOffset\n  }\n\n  return 0\n}\n\nfunction dayOfISOYear (isoYear, week, day) {\n  week = week || 0\n  day = day || 0\n  var date = new Date(0)\n  date.setUTCFullYear(isoYear, 0, 4)\n  var fourthOfJanuaryDay = date.getUTCDay() || 7\n  var diff = week * 7 + day + 1 - fourthOfJanuaryDay\n  date.setUTCDate(date.getUTCDate() + diff)\n  return date\n}\n\nmodule.exports = parse\n\n\n//# sourceURL=webpack:///./node_modules/date-fns/parse/index.js?");
+var isDate = __webpack_require__(7)
+
+var MILLISECONDS_IN_HOUR = 3600000
+var MILLISECONDS_IN_MINUTE = 60000
+var DEFAULT_ADDITIONAL_DIGITS = 2
+
+var parseTokenDateTimeDelimeter = /[T ]/
+var parseTokenPlainTime = /:/
+
+// year tokens
+var parseTokenYY = /^(\d{2})$/
+var parseTokensYYY = [
+  /^([+-]\d{2})$/, // 0 additional digits
+  /^([+-]\d{3})$/, // 1 additional digit
+  /^([+-]\d{4})$/ // 2 additional digits
+]
+
+var parseTokenYYYY = /^(\d{4})/
+var parseTokensYYYYY = [
+  /^([+-]\d{4})/, // 0 additional digits
+  /^([+-]\d{5})/, // 1 additional digit
+  /^([+-]\d{6})/ // 2 additional digits
+]
+
+// date tokens
+var parseTokenMM = /^-(\d{2})$/
+var parseTokenDDD = /^-?(\d{3})$/
+var parseTokenMMDD = /^-?(\d{2})-?(\d{2})$/
+var parseTokenWww = /^-?W(\d{2})$/
+var parseTokenWwwD = /^-?W(\d{2})-?(\d{1})$/
+
+// time tokens
+var parseTokenHH = /^(\d{2}([.,]\d*)?)$/
+var parseTokenHHMM = /^(\d{2}):?(\d{2}([.,]\d*)?)$/
+var parseTokenHHMMSS = /^(\d{2}):?(\d{2}):?(\d{2}([.,]\d*)?)$/
+
+// timezone tokens
+var parseTokenTimezone = /([Z+-].*)$/
+var parseTokenTimezoneZ = /^(Z)$/
+var parseTokenTimezoneHH = /^([+-])(\d{2})$/
+var parseTokenTimezoneHHMM = /^([+-])(\d{2}):?(\d{2})$/
+
+/**
+ * @category Common Helpers
+ * @summary Convert the given argument to an instance of Date.
+ *
+ * @description
+ * Convert the given argument to an instance of Date.
+ *
+ * If the argument is an instance of Date, the function returns its clone.
+ *
+ * If the argument is a number, it is treated as a timestamp.
+ *
+ * If an argument is a string, the function tries to parse it.
+ * Function accepts complete ISO 8601 formats as well as partial implementations.
+ * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
+ *
+ * If all above fails, the function passes the given argument to Date constructor.
+ *
+ * @param {Date|String|Number} argument - the value to convert
+ * @param {Object} [options] - the object with options
+ * @param {0 | 1 | 2} [options.additionalDigits=2] - the additional number of digits in the extended year format
+ * @returns {Date} the parsed date in the local time zone
+ *
+ * @example
+ * // Convert string '2014-02-11T11:30:30' to date:
+ * var result = parse('2014-02-11T11:30:30')
+ * //=> Tue Feb 11 2014 11:30:30
+ *
+ * @example
+ * // Parse string '+02014101',
+ * // if the additional number of digits in the extended year format is 1:
+ * var result = parse('+02014101', {additionalDigits: 1})
+ * //=> Fri Apr 11 2014 00:00:00
+ */
+function parse (argument, dirtyOptions) {
+  if (isDate(argument)) {
+    // Prevent the date to lose the milliseconds when passed to new Date() in IE10
+    return new Date(argument.getTime())
+  } else if (typeof argument !== 'string') {
+    return new Date(argument)
+  }
+
+  var options = dirtyOptions || {}
+  var additionalDigits = options.additionalDigits
+  if (additionalDigits == null) {
+    additionalDigits = DEFAULT_ADDITIONAL_DIGITS
+  } else {
+    additionalDigits = Number(additionalDigits)
+  }
+
+  var dateStrings = splitDateString(argument)
+
+  var parseYearResult = parseYear(dateStrings.date, additionalDigits)
+  var year = parseYearResult.year
+  var restDateString = parseYearResult.restDateString
+
+  var date = parseDate(restDateString, year)
+
+  if (date) {
+    var timestamp = date.getTime()
+    var time = 0
+    var offset
+
+    if (dateStrings.time) {
+      time = parseTime(dateStrings.time)
+    }
+
+    if (dateStrings.timezone) {
+      offset = parseTimezone(dateStrings.timezone)
+    } else {
+      // get offset accurate to hour in timezones that change offset
+      offset = new Date(timestamp + time).getTimezoneOffset()
+      offset = new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE).getTimezoneOffset()
+    }
+
+    return new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE)
+  } else {
+    return new Date(argument)
+  }
+}
+
+function splitDateString (dateString) {
+  var dateStrings = {}
+  var array = dateString.split(parseTokenDateTimeDelimeter)
+  var timeString
+
+  if (parseTokenPlainTime.test(array[0])) {
+    dateStrings.date = null
+    timeString = array[0]
+  } else {
+    dateStrings.date = array[0]
+    timeString = array[1]
+  }
+
+  if (timeString) {
+    var token = parseTokenTimezone.exec(timeString)
+    if (token) {
+      dateStrings.time = timeString.replace(token[1], '')
+      dateStrings.timezone = token[1]
+    } else {
+      dateStrings.time = timeString
+    }
+  }
+
+  return dateStrings
+}
+
+function parseYear (dateString, additionalDigits) {
+  var parseTokenYYY = parseTokensYYY[additionalDigits]
+  var parseTokenYYYYY = parseTokensYYYYY[additionalDigits]
+
+  var token
+
+  // YYYY or ±YYYYY
+  token = parseTokenYYYY.exec(dateString) || parseTokenYYYYY.exec(dateString)
+  if (token) {
+    var yearString = token[1]
+    return {
+      year: parseInt(yearString, 10),
+      restDateString: dateString.slice(yearString.length)
+    }
+  }
+
+  // YY or ±YYY
+  token = parseTokenYY.exec(dateString) || parseTokenYYY.exec(dateString)
+  if (token) {
+    var centuryString = token[1]
+    return {
+      year: parseInt(centuryString, 10) * 100,
+      restDateString: dateString.slice(centuryString.length)
+    }
+  }
+
+  // Invalid ISO-formatted year
+  return {
+    year: null
+  }
+}
+
+function parseDate (dateString, year) {
+  // Invalid ISO-formatted year
+  if (year === null) {
+    return null
+  }
+
+  var token
+  var date
+  var month
+  var week
+
+  // YYYY
+  if (dateString.length === 0) {
+    date = new Date(0)
+    date.setUTCFullYear(year)
+    return date
+  }
+
+  // YYYY-MM
+  token = parseTokenMM.exec(dateString)
+  if (token) {
+    date = new Date(0)
+    month = parseInt(token[1], 10) - 1
+    date.setUTCFullYear(year, month)
+    return date
+  }
+
+  // YYYY-DDD or YYYYDDD
+  token = parseTokenDDD.exec(dateString)
+  if (token) {
+    date = new Date(0)
+    var dayOfYear = parseInt(token[1], 10)
+    date.setUTCFullYear(year, 0, dayOfYear)
+    return date
+  }
+
+  // YYYY-MM-DD or YYYYMMDD
+  token = parseTokenMMDD.exec(dateString)
+  if (token) {
+    date = new Date(0)
+    month = parseInt(token[1], 10) - 1
+    var day = parseInt(token[2], 10)
+    date.setUTCFullYear(year, month, day)
+    return date
+  }
+
+  // YYYY-Www or YYYYWww
+  token = parseTokenWww.exec(dateString)
+  if (token) {
+    week = parseInt(token[1], 10) - 1
+    return dayOfISOYear(year, week)
+  }
+
+  // YYYY-Www-D or YYYYWwwD
+  token = parseTokenWwwD.exec(dateString)
+  if (token) {
+    week = parseInt(token[1], 10) - 1
+    var dayOfWeek = parseInt(token[2], 10) - 1
+    return dayOfISOYear(year, week, dayOfWeek)
+  }
+
+  // Invalid ISO-formatted date
+  return null
+}
+
+function parseTime (timeString) {
+  var token
+  var hours
+  var minutes
+
+  // hh
+  token = parseTokenHH.exec(timeString)
+  if (token) {
+    hours = parseFloat(token[1].replace(',', '.'))
+    return (hours % 24) * MILLISECONDS_IN_HOUR
+  }
+
+  // hh:mm or hhmm
+  token = parseTokenHHMM.exec(timeString)
+  if (token) {
+    hours = parseInt(token[1], 10)
+    minutes = parseFloat(token[2].replace(',', '.'))
+    return (hours % 24) * MILLISECONDS_IN_HOUR +
+      minutes * MILLISECONDS_IN_MINUTE
+  }
+
+  // hh:mm:ss or hhmmss
+  token = parseTokenHHMMSS.exec(timeString)
+  if (token) {
+    hours = parseInt(token[1], 10)
+    minutes = parseInt(token[2], 10)
+    var seconds = parseFloat(token[3].replace(',', '.'))
+    return (hours % 24) * MILLISECONDS_IN_HOUR +
+      minutes * MILLISECONDS_IN_MINUTE +
+      seconds * 1000
+  }
+
+  // Invalid ISO-formatted time
+  return null
+}
+
+function parseTimezone (timezoneString) {
+  var token
+  var absoluteOffset
+
+  // Z
+  token = parseTokenTimezoneZ.exec(timezoneString)
+  if (token) {
+    return 0
+  }
+
+  // ±hh
+  token = parseTokenTimezoneHH.exec(timezoneString)
+  if (token) {
+    absoluteOffset = parseInt(token[2], 10) * 60
+    return (token[1] === '+') ? -absoluteOffset : absoluteOffset
+  }
+
+  // ±hh:mm or ±hhmm
+  token = parseTokenTimezoneHHMM.exec(timezoneString)
+  if (token) {
+    absoluteOffset = parseInt(token[2], 10) * 60 + parseInt(token[3], 10)
+    return (token[1] === '+') ? -absoluteOffset : absoluteOffset
+  }
+
+  return 0
+}
+
+function dayOfISOYear (isoYear, week, day) {
+  week = week || 0
+  day = day || 0
+  var date = new Date(0)
+  date.setUTCFullYear(isoYear, 0, 4)
+  var fourthOfJanuaryDay = date.getUTCDay() || 7
+  var diff = week * 7 + day + 1 - fourthOfJanuaryDay
+  date.setUTCDate(date.getUTCDate() + diff)
+  return date
+}
+
+module.exports = parse
+
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-eval("/**\n * @category Common Helpers\n * @summary Is the given argument an instance of Date?\n *\n * @description\n * Is the given argument an instance of Date?\n *\n * @param {*} argument - the argument to check\n * @returns {Boolean} the given argument is an instance of Date\n *\n * @example\n * // Is 'mayonnaise' a Date?\n * var result = isDate('mayonnaise')\n * //=> false\n */\nfunction isDate (argument) {\n  return argument instanceof Date\n}\n\nmodule.exports = isDate\n\n\n//# sourceURL=webpack:///./node_modules/date-fns/is_date/index.js?");
+/**
+ * @category Common Helpers
+ * @summary Is the given argument an instance of Date?
+ *
+ * @description
+ * Is the given argument an instance of Date?
+ *
+ * @param {*} argument - the argument to check
+ * @returns {Boolean} the given argument is an instance of Date
+ *
+ * @example
+ * // Is 'mayonnaise' a Date?
+ * var result = isDate('mayonnaise')
+ * //=> false
+ */
+function isDate (argument) {
+  return argument instanceof Date
+}
+
+module.exports = isDate
+
 
 /***/ }),
 /* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getter\", function() { return getter; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"setter\", function() { return setter; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"toggler\", function() { return toggler; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"emailer\", function() { return emailer; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"texter\", function() { return texter; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"baseTodoItem\", function() { return baseTodoItem; });\n/**\n * @format\n */\nconst toggler = state => ({\n  toggleDone: () => { state.done = (!state.done); },\n});\n\nconst emailer = state => ({\n  email: () => { alert(`${state.email} was notified ${state.title} was completed.`); },\n});\n\nconst texter = state => ({\n  text: () => { alert(`${state.recpient} was notified ${state.title} was completed.`); },\n});\n\nconst getter = state => ({\n  get: prop => state[prop],\n});\n\nconst setter = state => ({\n  set: (prop, value) => { state[prop] = value; },\n});\n\nconst exporter = state => ({\n  exportState: () => Object.assign({}, state),\n});\n\n\nfunction baseTodoItem(state) {\n  return Object.assign({}, getter(state), setter(state), toggler(state), exporter(state));\n}\n\n\n\n\n//# sourceURL=webpack:///./src/todo.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getter", function() { return getter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setter", function() { return setter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggler", function() { return toggler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "emailer", function() { return emailer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "texter", function() { return texter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "baseTodoItem", function() { return baseTodoItem; });
+/**
+ * @format
+ */
+const toggler = state => ({
+  toggleDone: () => { state.done = (!state.done); },
+});
+
+const emailer = state => ({
+  email: () => { alert(`${state.email} was notified ${state.title} was completed.`); },
+});
+
+const texter = state => ({
+  text: () => { alert(`${state.recpient} was notified ${state.title} was completed.`); },
+});
+
+const getter = state => ({
+  get: prop => state[prop],
+});
+
+const setter = state => ({
+  set: (prop, value) => { state[prop] = value; },
+});
+
+const exporter = state => ({
+  exportState: () => Object.assign({}, state),
+});
+
+
+function baseTodoItem(state) {
+  return Object.assign({}, getter(state), setter(state), toggler(state), exporter(state));
+}
+
+
+
 
 /***/ }),
 /* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);\n/* harmony import */ var _commonTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);\n/**\n * @format\n */\n__webpack_require__(1);\n\n\n\n\nconst projectGlobal = {\n  projectBarLabels: ['Project:', 'Desc:', 'Due:', 'Priority:', 'Complete:'],\n};\n\nconst utility = {\n  // Add functions - functions that add children to a parent element\n\n  addPageButtons(parentElem) {\n    const button = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].createButton('Add Project');\n    button.addEventListener('click', utility.addProjectForm);\n    parentElem.appendChild(button);\n  },\n\n  addProjectBar(parentElem) {\n    parentElem.appendChild(utility.createProjectBar());\n  },\n\n  addProjectTable(parentElem) {\n    const colHeaders = ['', 'Name', 'Due Date', 'Action'];\n    const table = document.createElement('table');\n    table.id = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectTableId;\n\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addTableHeader(table, colHeaders);\n    const tbody = document.createElement('tbody');\n    table.appendChild(tbody);\n\n    for (let i = 0; i < _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].projects.length; i += 1) {\n      const tr = utility.createProjectRow(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].projects[i], i);\n      tbody.appendChild(tr);\n    }\n\n    parentElem.appendChild(table);\n  },\n\n  // Create functions - functions that return an element\n  createProjectBar() {\n    const section = document.createElement('section');\n    section.id = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectStatusBarId;\n\n    for (let i = 0; i < projectGlobal.projectBarLabels.length; i += 1) {\n      const span = document.createElement('span');\n      span.textContent = projectGlobal.projectBarLabels[i];\n      section.appendChild(span);\n    }\n\n    section.appendChild(document.createElement('hr'));\n\n    return section;\n  },\n\n  createProjectRow(project, index) {\n    const propOrder = ['name', 'due'];\n    const tr = document.createElement('tr');\n    tr.appendChild(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].createStatusCell(project));\n\n    for (let i = 0; i < propOrder.length; i += 1) {\n      const prop = propOrder[i];\n      tr.appendChild(\n        _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].createDataCell('td', project.get(prop)),\n      );\n      if (prop === 'name')\n        tr.childNodes[1].addEventListener('click', utility.loadProject);\n    }\n\n    const button = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].createButton('Delete');\n    button.addEventListener('click', utility.deleteProject);\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addActionButton(tr, button);\n    // Put index of utility object in tasks array and hide it\n    tr.appendChild(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].createDataCell('td', index, true));\n    return tr;\n  },\n\n  // Support functions\n  //\n  buildProjectSection() {\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addSection(\n      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectsContainerId),\n      _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectsSectionId,\n    );\n    utility.addProjectTable(\n      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectsSectionId),\n    );\n  },\n\n  buildTaskSection() {\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addSection(\n      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectsContainerId),\n      _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].tasksSectionId,\n    );\n    utility.addProjectBar(\n      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].tasksSectionId),\n    );\n\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addTaskTable(\n      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].tasksSectionId),\n    );\n  },\n\n  calcPercentComplete(projectName) {\n    const tasks = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].tasks.filter(\n      item => projectName === null || item.get('project') === projectName,\n    );\n    const numTasks = tasks.length;\n    const numComplete = tasks.filter(item => item.get('done') === true).length;\n\n    return Math.round(numTasks === 0 ? 0 : numComplete / numTasks * 100);\n  },\n\n  renderProject(index) {\n    const projectIndex =\n      index >= 0 ? index : _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].projects.length - 1;\n    const tr = utility.createProjectRow(\n      _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].projects[projectIndex],\n      projectIndex,\n    );\n    const parentElem = document.getElementById(\n      _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectTableId,\n    );\n    const tbody = parentElem.querySelector('tbody');\n\n    if (index >= 0) {\n      // Add one to allow for thead\n      parentElem.replaceChild(tr, parentElem.childNodes[index + 1]);\n    } else {\n      tbody.appendChild(tr);\n    }\n  },\n\n  updateProjectBar(project) {\n    if (project === null) {\n      const parentElem = document.getElementById(\n        _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].tasksSectionId,\n      );\n      const section = utility.createProjectBar();\n      parentElem.replaceChild(\n        section,\n        document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectStatusBarId),\n      );\n      return;\n    }\n    const propOrder = ['name', 'desc', 'due', 'priority'];\n    const section = document.createElement('section');\n    section.id = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectStatusBarId;\n\n    for (let i = 0; i < propOrder.length; i += 1) {\n      const span = document.createElement('span');\n      span.textContent = `${projectGlobal.projectBarLabels[i]} ${project.get(\n        propOrder[i],\n      )}`;\n      section.appendChild(span);\n    }\n    const percentComplete = utility.calcPercentComplete(project.get('name'));\n    const span = document.createElement('span');\n    span.textContent = `${\n      projectGlobal.projectBarLabels[projectGlobal.projectBarLabels.length - 1]\n    } ${percentComplete}%`;\n    section.appendChild(span);\n    section.appendChild(document.createElement('hr'));\n\n    const parentElem = document.getElementById(\n      _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].tasksSectionId,\n    );\n    parentElem.replaceChild(\n      section,\n      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectStatusBarId),\n    );\n  },\n\n  // Event listener helpers\n\n  deleteProjectTasks(projectName) {\n    // Every splice moves items to a new index\n    let accum = 0;\n    const indices = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].buildIndices(projectName);\n    for (let i = 0; i < indices.length; i += 1) {\n      _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].tasks.splice(indices[i] - accum, 1);\n      accum += 1;\n    }\n  },\n\n  deleteTaskTable() {\n    const table = document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].taskTableId);\n    table.parentNode.removeChild(table);\n  },\n\n  // Event listeners\n\n  addProjectForm(e) {\n    const saveButton = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].createModalButton(\n      'submit',\n      'add-project',\n      ['btn'],\n      'Add Project',\n      utility.handleSaveProject,\n    );\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addModalForm(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"forms\"].projectForm, saveButton);\n  },\n\n  deleteProject(e) {\n    const table = document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectTableId);\n    const tbody = table.querySelector('tbody');\n    const row = e.target.parentNode.parentNode;\n    const sibling = e.target.parentNode.parentNode.nextSibling;\n    const projectIndex = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].getArrayIndex(row);\n    const project = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].projects[projectIndex];\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].projects.splice(projectIndex, 1);\n    tbody.removeChild(row);\n    // Once project is deleted from the arrey, the hidden indices will\n    // be off, so they need to be updated\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].updateHiddenIndices(sibling);\n    // Delete tasks associated with this project\n    utility.deleteProjectTasks(project.get('name'));\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].currentProject = null;\n    utility.deleteTaskTable();\n    utility.updateProjectBar(project);\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addTaskTable(\n      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].tasksSectionId),\n    );\n  },\n\n  handleContainerClicks(e) {\n    utility.updateProjectBar(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].currentProject);\n  },\n\n  handleSaveProject(e) {\n    e.preventDefault();\n    const form = e.target.parentNode;\n    const formData = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].getFormData(form);\n    delete formData.itemindex;\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].projects.push(_todo__WEBPACK_IMPORTED_MODULE_0__[\"baseTodoItem\"](formData));\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].deleteModal();\n    utility.renderProject(-1);\n  },\n\n  loadProject(e) {\n    // Display all associated tasks for a project\n    const row = e.target.parentNode;\n    const index = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].getArrayIndex(row);\n    const project = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].projects[index];\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].currentProject = project;\n    utility.updateProjectBar(project);\n    const parentElem = document.getElementById(\n      _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].tasksSectionId,\n    );\n    const tableElem = document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].taskTableId);\n    const taskTable = _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].createTaskTable(project.get('name'));\n    parentElem.replaceChild(taskTable, tableElem);\n  },\n};\n\nfunction buildProjectPage() {\n  _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"state\"].currentProject = null;\n\n  // Add Container for projects and tasks\n  _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addSection(\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].getRootElement(),\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectsContainerId,\n  );\n  const projectContainer = document.getElementById(\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].projectsContainerId,\n  );\n  projectContainer.addEventListener('click', utility.handleContainerClicks);\n\n  utility.buildProjectSection();\n  utility.buildTaskSection();\n  const taskContainer = document.getElementById(\n    _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].tasksSectionId,\n  );\n  _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addActionSection(taskContainer);\n  utility.addPageButtons(\n    document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].pageButtonsId),\n  );\n  _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addPageButtons(\n    document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__[\"elemId\"].pageButtonsId),\n  );\n  _commonTab__WEBPACK_IMPORTED_MODULE_1__[\"utility\"].addFooter(projectContainer);\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (buildProjectPage);\n\n\n//# sourceURL=webpack:///./src/projectsTab.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var _commonTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/**
+ * @format
+ */
+__webpack_require__(1);
+
+
+
+
+const projectGlobal = {
+  projectBarLabels: ['Project:', 'Desc:', 'Due:', 'Priority:', 'Complete:'],
+};
+
+const utility = {
+  // Add functions - functions that add children to a parent element
+
+  addPageButtons(parentElem) {
+    const button = _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].createButton('Add Project');
+    button.addEventListener('click', utility.addProjectForm);
+    parentElem.appendChild(button);
+  },
+
+  addProjectBar(parentElem) {
+    parentElem.appendChild(utility.createProjectBar());
+  },
+
+  addProjectTable(parentElem) {
+    const colHeaders = ['', 'Name', 'Due Date', 'Action'];
+    const table = document.createElement('table');
+    table.id = _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectTableId;
+
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addTableHeader(table, colHeaders);
+    const tbody = document.createElement('tbody');
+    table.appendChild(tbody);
+
+    for (let i = 0; i < _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].projects.length; i += 1) {
+      const tr = utility.createProjectRow(_commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].projects[i], i);
+      tbody.appendChild(tr);
+    }
+
+    parentElem.appendChild(table);
+  },
+
+  // Create functions - functions that return an element
+  createProjectBar() {
+    const section = document.createElement('section');
+    section.id = _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectStatusBarId;
+
+    for (let i = 0; i < projectGlobal.projectBarLabels.length; i += 1) {
+      const span = document.createElement('span');
+      span.textContent = projectGlobal.projectBarLabels[i];
+      section.appendChild(span);
+    }
+
+    section.appendChild(document.createElement('hr'));
+
+    return section;
+  },
+
+  createProjectRow(project, index) {
+    const propOrder = ['name', 'due'];
+    const tr = document.createElement('tr');
+    tr.appendChild(_commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].createStatusCell(project));
+
+    for (let i = 0; i < propOrder.length; i += 1) {
+      const prop = propOrder[i];
+      tr.appendChild(
+        _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].createDataCell('td', project.get(prop)),
+      );
+      if (prop === 'name')
+        tr.childNodes[1].addEventListener('click', utility.loadProject);
+    }
+
+    const button = _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].createButton('Delete');
+    button.addEventListener('click', utility.deleteProject);
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addActionButton(tr, button);
+    // Put index of utility object in tasks array and hide it
+    tr.appendChild(_commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].createDataCell('td', index, true));
+    return tr;
+  },
+
+  // Support functions
+  //
+  buildProjectSection() {
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addSection(
+      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectsContainerId),
+      _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectsSectionId,
+    );
+    utility.addProjectTable(
+      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectsSectionId),
+    );
+  },
+
+  buildTaskSection() {
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addSection(
+      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectsContainerId),
+      _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].tasksSectionId,
+    );
+    utility.addProjectBar(
+      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].tasksSectionId),
+    );
+
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addTaskTable(
+      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].tasksSectionId),
+    );
+  },
+
+  calcPercentComplete(projectName) {
+    const tasks = _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].tasks.filter(
+      item => projectName === null || item.get('project') === projectName,
+    );
+    const numTasks = tasks.length;
+    const numComplete = tasks.filter(item => item.get('done') === true).length;
+
+    return Math.round(numTasks === 0 ? 0 : numComplete / numTasks * 100);
+  },
+
+  renderProject(index) {
+    const projectIndex =
+      index >= 0 ? index : _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].projects.length - 1;
+    const tr = utility.createProjectRow(
+      _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].projects[projectIndex],
+      projectIndex,
+    );
+    const parentElem = document.getElementById(
+      _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectTableId,
+    );
+    const tbody = parentElem.querySelector('tbody');
+
+    if (index >= 0) {
+      // Add one to allow for thead
+      parentElem.replaceChild(tr, parentElem.childNodes[index + 1]);
+    } else {
+      tbody.appendChild(tr);
+    }
+  },
+
+  updateProjectBar(project) {
+    if (project === null) {
+      const parentElem = document.getElementById(
+        _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].tasksSectionId,
+      );
+      const section = utility.createProjectBar();
+      parentElem.replaceChild(
+        section,
+        document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectStatusBarId),
+      );
+      return;
+    }
+    const propOrder = ['name', 'desc', 'due', 'priority'];
+    const section = document.createElement('section');
+    section.id = _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectStatusBarId;
+
+    for (let i = 0; i < propOrder.length; i += 1) {
+      const span = document.createElement('span');
+      span.textContent = `${projectGlobal.projectBarLabels[i]} ${project.get(
+        propOrder[i],
+      )}`;
+      section.appendChild(span);
+    }
+    const percentComplete = utility.calcPercentComplete(project.get('name'));
+    const span = document.createElement('span');
+    span.textContent = `${
+      projectGlobal.projectBarLabels[projectGlobal.projectBarLabels.length - 1]
+    } ${percentComplete}%`;
+    section.appendChild(span);
+    section.appendChild(document.createElement('hr'));
+
+    const parentElem = document.getElementById(
+      _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].tasksSectionId,
+    );
+    parentElem.replaceChild(
+      section,
+      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectStatusBarId),
+    );
+  },
+
+  // Event listener helpers
+
+  deleteProjectTasks(projectName) {
+    // Every splice moves items to a new index
+    let accum = 0;
+    const indices = _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].buildIndices(projectName);
+    for (let i = 0; i < indices.length; i += 1) {
+      _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].tasks.splice(indices[i] - accum, 1);
+      accum += 1;
+    }
+  },
+
+  deleteTaskTable() {
+    const table = document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].taskTableId);
+    table.parentNode.removeChild(table);
+  },
+
+  // Event listeners
+
+  addProjectForm(e) {
+    const saveButton = _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].createModalButton(
+      'submit',
+      'add-project',
+      ['btn'],
+      'Add Project',
+      utility.handleSaveProject,
+    );
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addModalForm(_commonTab__WEBPACK_IMPORTED_MODULE_1__["forms"].projectForm, saveButton);
+  },
+
+  deleteProject(e) {
+    const table = document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectTableId);
+    const tbody = table.querySelector('tbody');
+    const row = e.target.parentNode.parentNode;
+    const sibling = e.target.parentNode.parentNode.nextSibling;
+    const projectIndex = _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].getArrayIndex(row);
+    const project = _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].projects[projectIndex];
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].projects.splice(projectIndex, 1);
+    tbody.removeChild(row);
+    // Once project is deleted from the arrey, the hidden indices will
+    // be off, so they need to be updated
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].updateHiddenIndices(sibling);
+    // Delete tasks associated with this project
+    utility.deleteProjectTasks(project.get('name'));
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].currentProject = null;
+    utility.deleteTaskTable();
+    utility.updateProjectBar(project);
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addTaskTable(
+      document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].tasksSectionId),
+    );
+  },
+
+  handleContainerClicks(e) {
+    utility.updateProjectBar(_commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].currentProject);
+  },
+
+  handleSaveProject(e) {
+    e.preventDefault();
+    const form = e.target.parentNode;
+    const formData = _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].getFormData(form);
+    delete formData.itemindex;
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].projects.push(_todo__WEBPACK_IMPORTED_MODULE_0__["baseTodoItem"](formData));
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].deleteModal();
+    utility.renderProject(-1);
+  },
+
+  loadProject(e) {
+    // Display all associated tasks for a project
+    const row = e.target.parentNode;
+    const index = _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].getArrayIndex(row);
+    const project = _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].projects[index];
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].currentProject = project;
+    utility.updateProjectBar(project);
+    const parentElem = document.getElementById(
+      _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].tasksSectionId,
+    );
+    const tableElem = document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].taskTableId);
+    const taskTable = _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].createTaskTable(project.get('name'));
+    parentElem.replaceChild(taskTable, tableElem);
+  },
+};
+
+function buildProjectPage() {
+  _commonTab__WEBPACK_IMPORTED_MODULE_1__["state"].currentProject = null;
+
+  // Add Container for projects and tasks
+  _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addSection(
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].getRootElement(),
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectsContainerId,
+  );
+  const projectContainer = document.getElementById(
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].projectsContainerId,
+  );
+  projectContainer.addEventListener('click', utility.handleContainerClicks);
+
+  utility.buildProjectSection();
+  utility.buildTaskSection();
+  const taskContainer = document.getElementById(
+    _commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].tasksSectionId,
+  );
+  _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addActionSection(taskContainer);
+  utility.addPageButtons(
+    document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].pageButtonsId),
+  );
+  _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addPageButtons(
+    document.getElementById(_commonTab__WEBPACK_IMPORTED_MODULE_1__["elemId"].pageButtonsId),
+  );
+  _commonTab__WEBPACK_IMPORTED_MODULE_1__["utility"].addFooter(projectContainer);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (buildProjectPage);
+
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=bundle.js.map
