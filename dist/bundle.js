@@ -93,7 +93,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_assets_css_style_scss__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _tasksTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _projectsTab__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var _projectsTab__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
 /* harmony import */ var _commonTab__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
 /**
  * @format
@@ -265,7 +265,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var date_fns_is_past__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(date_fns_is_past__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var date_fns_parse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 /* harmony import */ var date_fns_parse__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(date_fns_parse__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
+/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
 /**
  * @format
  */
@@ -959,7 +959,8 @@ module.exports = isPast
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isDate = __webpack_require__(7)
+var getTimezoneOffsetInMilliseconds = __webpack_require__(7)
+var isDate = __webpack_require__(8)
 
 var MILLISECONDS_IN_HOUR = 3600000
 var MILLISECONDS_IN_MINUTE = 60000
@@ -1068,14 +1069,25 @@ function parse (argument, dirtyOptions) {
     }
 
     if (dateStrings.timezone) {
-      offset = parseTimezone(dateStrings.timezone)
+      offset = parseTimezone(dateStrings.timezone) * MILLISECONDS_IN_MINUTE
     } else {
-      // get offset accurate to hour in timezones that change offset
-      offset = new Date(timestamp + time).getTimezoneOffset()
-      offset = new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE).getTimezoneOffset()
+      var fullTime = timestamp + time
+      var fullTimeDate = new Date(fullTime)
+
+      offset = getTimezoneOffsetInMilliseconds(fullTimeDate)
+
+      // Adjust time when it's coming from DST
+      var fullTimeDateNextDay = new Date(fullTime)
+      fullTimeDateNextDay.setDate(fullTimeDate.getDate() + 1)
+      var offsetDiff =
+        getTimezoneOffsetInMilliseconds(fullTimeDateNextDay) -
+        getTimezoneOffsetInMilliseconds(fullTimeDate)
+      if (offsetDiff > 0) {
+        offset += offsetDiff
+      }
     }
 
-    return new Date(timestamp + time + offset * MILLISECONDS_IN_MINUTE)
+    return new Date(timestamp + time + offset)
   } else {
     return new Date(argument)
   }
@@ -1285,6 +1297,33 @@ module.exports = parse
 /* 7 */
 /***/ (function(module, exports) {
 
+var MILLISECONDS_IN_MINUTE = 60000
+
+/**
+ * Google Chrome as of 67.0.3396.87 introduced timezones with offset that includes seconds.
+ * They usually appear for dates that denote time before the timezones were introduced
+ * (e.g. for 'Europe/Prague' timezone the offset is GMT+00:57:44 before 1 October 1891
+ * and GMT+01:00:00 after that date)
+ *
+ * Date#getTimezoneOffset returns the offset in minutes and would return 57 for the example above,
+ * which would lead to incorrect calculations.
+ *
+ * This function returns the timezone offset in milliseconds that takes seconds in account.
+ */
+module.exports = function getTimezoneOffsetInMilliseconds (dirtyDate) {
+  var date = new Date(dirtyDate.getTime())
+  var baseTimezoneOffset = date.getTimezoneOffset()
+  date.setSeconds(0, 0)
+  var millisecondsPartOfTimezoneOffset = date.getTime() % MILLISECONDS_IN_MINUTE
+
+  return baseTimezoneOffset * MILLISECONDS_IN_MINUTE + millisecondsPartOfTimezoneOffset
+}
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
 /**
  * @category Common Helpers
  * @summary Is the given argument an instance of Date?
@@ -1308,7 +1347,7 @@ module.exports = isDate
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1355,12 +1394,12 @@ function baseTodoItem(state) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
 /* harmony import */ var _commonTab__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 /**
  * @format
